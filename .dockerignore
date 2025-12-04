@@ -1,0 +1,54 @@
+# Node
+node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pnpm-lock.yaml
+.pnpm-store
+
+# Logs
+*.log
+logs
+*.pid
+*.seed
+*.pid.lock
+
+# Env
+.env
+.env.*local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Next.js build directories
+.next
+out
+dist
+
+# Test / tooling
+coverage
+.vscode
+.idea
+*.tsbuildinfo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Prisma
+prisma/dev.db
+prisma/dev.db-journal
+
+# Docker
+Dockerfile.dev
+docker-compose.yml
+docker-compose.*.yml
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Misc
+*.swp
+*.swo
