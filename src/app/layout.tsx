@@ -1,8 +1,13 @@
 import React, { Suspense } from 'react';
+import { SWRConfigProvider } from 'lib/providers/SWRConfigProvider';
 import { ThemeProvider } from 'lib/providers/ThemeProvider';
 import { StyledComponentsRegistry } from 'lib/registries/StyledComponentsRegistry';
 import type { Metadata, Viewport } from 'next';
 import { Jost } from 'next/font/google';
+
+import { Footer } from './_layout/Footer';
+import { Main } from './_layout/Main';
+import { Navigation } from './_layout/Navigation';
 
 const font = Jost({
   weight: ['400', '500', '600', '700'],
@@ -37,7 +42,13 @@ export default function RootLayout({
       <body className={font.className} style={style}>
         <StyledComponentsRegistry>
           <ThemeProvider>
-            <Suspense fallback={<></>}>SVOE CAFE{children}</Suspense>
+            <SWRConfigProvider>
+              <Suspense fallback={<></>}>
+                <Navigation />
+                <Main>{children}</Main>
+                <Footer />
+              </Suspense>
+            </SWRConfigProvider>
           </ThemeProvider>
         </StyledComponentsRegistry>
       </body>

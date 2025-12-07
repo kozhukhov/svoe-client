@@ -17,13 +17,13 @@ type TagProps = {
 
 const style = css<TagProps>`
   ${({
-    $textAlign,
-    $color,
-    $marginTop,
-    $marginBottom,
-    $fontWeight,
-    $maxWidth,
-  }) => css`
+  $textAlign,
+  $color,
+  $marginTop,
+  $marginBottom,
+  $fontWeight,
+  $maxWidth,
+}) => css`
     text-align: ${$textAlign};
     margin: ${$textAlign === 'center' ? 'auto' : '0'};
     color: ${$color};
@@ -62,8 +62,8 @@ const style = css<TagProps>`
           letter-spacing: -0.32px;
 
           ${media.mobile} {
-            font-size: 32px;
-            line-height: 38px;
+            font-size: 28px;
+            line-height: 34px;
           }
         `;
       case 4:

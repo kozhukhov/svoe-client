@@ -62,17 +62,17 @@ const baseButtonStyle = css<Props>`
 `;
 
 const primaryButtonStyle = css<Props>`
-  color: #ffffff;
+  color: #1d2939;
   border: none;
 
-  background: #465fff;
+  background: rgb(249, 198, 70);
 
   &:not(:disabled):hover {
-    background: rgb(55, 76, 217);
+    background: rgb(249, 198, 70, 0.8);
   }
 
   &:not(:disabled):active {
-    background: rgb(38, 57, 181);
+    background: rgb(249, 198, 70, 0.6);
   }
 `;
 

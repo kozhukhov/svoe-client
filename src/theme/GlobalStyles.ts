@@ -18,7 +18,7 @@ const GlobalStyles = createGlobalStyle`
     -ms-overflow-style: scrollbar;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     -webkit-font-smoothing: antialiased;
-    overflow: hidden;
+    background-color: #f9fafb;
   }
 
   input, textarea, button {

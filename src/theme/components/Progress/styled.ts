@@ -24,7 +24,7 @@ export const Bar = styled.span`
   transform-origin: left center;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 0.2s;
-  background-color: #465fff;
+  background-color: rgb(249, 198, 70);
   transform-origin: center center;
   animation: ${infiniteAnimation} 1s linear infinite;
 `;

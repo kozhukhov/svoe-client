@@ -25,6 +25,7 @@ export const Skeleton = styled.div<SkeletonProps>`
   );
   background-size: 400% 100%;
   animation: ${backgroundAnimation} 1400ms ease infinite;
+  border-radius: 16px;
 
   ${({ $width, $height, $marginBottom }) => css`
     width: ${$width};

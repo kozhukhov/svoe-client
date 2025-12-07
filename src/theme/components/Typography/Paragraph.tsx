@@ -17,14 +17,14 @@ type ElementProps = {
 
 const style = css<ElementProps>`
   ${({
-    $maxWidth,
-    $textAlign,
-    $color,
-    $marginTop,
-    $marginBottom,
-    $noWrap,
-    $fontWeight,
-  }) => css`
+  $maxWidth,
+  $textAlign,
+  $color,
+  $marginTop,
+  $marginBottom,
+  $noWrap,
+  $fontWeight,
+}) => css`
     max-width: ${$maxWidth};
     text-align: ${$textAlign};
     margin: ${$textAlign === 'center' ? 'auto' : '0'};
@@ -77,7 +77,7 @@ const Text = styled.div<ElementProps>`
   ${style}
 `;
 
-const TextLink = styled(BaseLink)<ElementProps>`
+const TextLink = styled(BaseLink) <ElementProps>`
   ${style}
 
   display: block;
@@ -87,7 +87,7 @@ const TextLink = styled(BaseLink)<ElementProps>`
   text-decoration: none;
 
   &:hover {
-    color: rgba(21, 27, 45, 0.95);
+    color: rgb(249, 198, 70);
   }
 `;
 
@@ -109,7 +109,7 @@ export const Paragraph: React.FC<Props> = ({
   children,
   marginBottom = '0px',
   marginTop = '0px',
-  color = '#667085',
+  color = '#374151',
   textAlign = 'left',
   noWrap = false,
   level = 1,
@@ -132,7 +132,7 @@ export const Paragraph: React.FC<Props> = ({
 
   if (href) {
     return (
-      <TextLink href={href} {...commonProps}>
+      <TextLink href={href} {...commonProps} rel="noreferrer" target="_blank">
         {children}
       </TextLink>
     );
