@@ -103,6 +103,7 @@ type Props = {
   maxWidth?: string;
   fontWeight?: 400 | 500 | 600 | 700;
   href?: string;
+  newPage?: boolean;
 };
 
 export const Paragraph: React.FC<Props> = ({
@@ -116,6 +117,7 @@ export const Paragraph: React.FC<Props> = ({
   maxWidth,
   fontWeight = 400,
   href,
+  newPage = false,
   ...props
 }) => {
   const commonProps = {
@@ -132,7 +134,12 @@ export const Paragraph: React.FC<Props> = ({
 
   if (href) {
     return (
-      <TextLink href={href} {...commonProps} rel="noreferrer" target="_blank">
+      <TextLink
+        href={href}
+        {...commonProps}
+        rel="noreferrer"
+        target={newPage ? '_blank' : '_self'}
+      >
         {children}
       </TextLink>
     );

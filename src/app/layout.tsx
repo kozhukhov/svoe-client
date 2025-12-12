@@ -5,9 +5,7 @@ import { StyledComponentsRegistry } from 'lib/registries/StyledComponentsRegistr
 import type { Metadata, Viewport } from 'next';
 import { Jost } from 'next/font/google';
 
-import { Footer } from './_layout/Footer';
-import { Main } from './_layout/Main';
-import { Navigation } from './_layout/Navigation';
+import { Application } from './_layout/Application';
 
 const font = Jost({
   weight: ['400', '500', '600', '700'],
@@ -44,9 +42,7 @@ export default function RootLayout({
           <ThemeProvider>
             <SWRConfigProvider>
               <Suspense fallback={<></>}>
-                <Navigation />
-                <Main>{children}</Main>
-                <Footer />
+                <Application>{children}</Application>
               </Suspense>
             </SWRConfigProvider>
           </ThemeProvider>

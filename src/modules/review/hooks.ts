@@ -1,9 +1,13 @@
 import { useLister } from 'lib/hooks/useLister';
 
+import { useActiveRestaurant } from 'modules/restaurant/hooks';
+
 import { getReviews } from './service';
 
 export const useReviews = () => {
-  const activeRestaurantID = 'cmirn0fht0002ukrep10qbook';
+  const { activeRestaurant } = useActiveRestaurant();
+
+  const activeRestaurantID = activeRestaurant?.id;
 
   const { items, hasMore, total, loadMore, isLoading, isValidating } =
     useLister(

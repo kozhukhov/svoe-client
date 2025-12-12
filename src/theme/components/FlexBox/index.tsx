@@ -27,14 +27,14 @@ const Wrapper = styled.div<{
   display: flex;
 
   ${({
-    $justify,
-    $direction,
-    $align,
-    $marginBottom,
-    $gap,
-    $stretch,
-    $marginTop,
-  }) => css`
+  $justify,
+  $direction,
+  $align,
+  $marginBottom,
+  $gap,
+  $stretch,
+  $marginTop,
+}) => css`
     justify-content: ${$justify};
     flex-direction: ${$direction};
     align-items: ${$align};
@@ -43,8 +43,9 @@ const Wrapper = styled.div<{
     margin-top: ${$marginTop};
 
     ${$stretch &&
-    css`
-      > div {
+  css`
+      > div,
+      > button {
         flex: 1 1 0px;
       }
     `};

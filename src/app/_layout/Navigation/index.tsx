@@ -5,6 +5,8 @@ import { usePathname } from 'next/navigation';
 import { Logo } from 'theme/components/Logo';
 import { Paragraph } from 'theme/components/Typography';
 
+import { useActiveRestaurant } from 'modules/restaurant/hooks';
+
 import { MENU } from './constants';
 import * as Styled from './styled';
 import { useScroll } from './useScroll';
@@ -13,8 +15,10 @@ export const Navigation = () => {
   const isScrolled = useScroll();
   const [isOpen, setIsOpen] = useState(false);
 
+  const { activeRestaurant } = useActiveRestaurant();
+
   const pathname = usePathname();
-  console.log(pathname);
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -28,7 +32,7 @@ export const Navigation = () => {
             {MENU.map((menu) => (
               <Styled.MenuItem
                 $active={pathname.includes(menu.url) && menu.url !== '/'}
-                href={menu.url}
+                href={`/${activeRestaurant?.slug}/${menu.url}`}
                 key={menu.title}
               >
                 {menu.title}
