@@ -1,18 +1,20 @@
 import { MdAccessTime, MdLocalShipping, MdPayment } from 'react-icons/md';
 
-export const getDeliveryCards = () => {
+import { RestaurantDTO } from 'modules/restaurant/dto';
+
+export const getDeliveryCards = (restaurant: RestaurantDTO) => {
   return [
     {
       icon: <MdAccessTime />,
       name: 'Время доставки',
       value: 'Ежедневно с 11:00 до 23:00',
-      note: 'Принимаем заказы до 22:00. Среднее время доставки по городу - около 50 минут.',
+      note: `Принимаем заказы до 22:00. Среднее время доставки по городу - около ${restaurant?.deliveryTimeMinutes} минут.`,
     },
     {
       icon: <MdLocalShipping />,
       name: 'Условия доставки',
-      value: 'Бесплатно от 35 рублей',
-      note: 'При сумме заказа до 35 рублей стоимость доставки - 4 рубля.',
+      value: `Бесплатно от ${restaurant?.deliveryMinFreeSum?.toFixed(2)} BYN`,
+      note: `При сумме заказа до ${restaurant?.deliveryMinFreeSum?.toFixed(2)} BYN стоимость доставки - ${restaurant?.deliveryPaidCost?.toFixed(2)} BYN.`,
     },
     {
       icon: <MdPayment />,

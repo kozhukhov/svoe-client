@@ -1,42 +1,33 @@
-import FacebookIcon from './assets/facebook.svg';
+import { RestaurantDTO } from 'modules/restaurant/dto';
+
+// import FacebookIcon from './assets/facebook.svg';
 import InstagramIcon from './assets/instagram.svg';
-import TelegramIcon from './assets/telegram.svg';
-import TikTokIcon from './assets/tiktok.svg';
-import WhatsAppIcon from './assets/whatsapp.svg';
+// import TelegramIcon from './assets/telegram.svg';
+// import TikTokIcon from './assets/tiktok.svg';
+import VkIcon from './assets/vk.svg';
+// import WhatsAppIcon from './assets/whatsapp.svg';
 
-const INSTAGRAM_URL = 'https://www.instagram.com/';
-const TELEGRAM_URL = 'https://www.telegram.com/';
-const WHATSAPP_URL = 'https://www.whatsapp.com/';
-const FACEBOOK_URL = 'https://www.facebook.com/';
-const TIKTOK_URL = 'https://www.tiktok.com/';
+export const getSocials = (restaurant: RestaurantDTO) => {
+  const result = [];
 
-export const SOCIALS = [
-  {
-    name: 'Instagram',
-    url: INSTAGRAM_URL,
-    icon: InstagramIcon.src,
-  },
-  {
-    name: 'Telegram',
-    url: TELEGRAM_URL,
-    icon: TelegramIcon.src,
-  },
-  {
-    name: 'WhatsApp',
-    url: WHATSAPP_URL,
-    icon: WhatsAppIcon.src,
-  },
-  {
-    name: 'Facebook',
-    url: FACEBOOK_URL,
-    icon: FacebookIcon.src,
-  },
-  {
-    name: 'TikTok',
-    url: TIKTOK_URL,
-    icon: TikTokIcon.src,
-  },
-];
+  if (restaurant?.instagramUrl) {
+    result.push({
+      name: 'Instagram',
+      url: restaurant.instagramUrl,
+      icon: InstagramIcon.src,
+    });
+  }
+
+  if (restaurant?.vkUrl) {
+    result.push({
+      name: 'VK',
+      url: restaurant.vkUrl,
+      icon: VkIcon.src,
+    });
+  }
+
+  return result;
+};
 
 export const MENU = [
   {

@@ -1,17 +1,19 @@
 import { MdLocationOn, MdPhone, MdSchedule } from 'react-icons/md';
 
-export const getContactCards = () => {
+import { RestaurantDTO } from 'modules/restaurant/dto';
+
+export const getContactCards = (restaurant: RestaurantDTO) => {
   return [
     {
       icon: <MdPhone />,
       name: 'Телефон для заказов',
-      value: '+375 29 188-05-55',
+      value: restaurant?.phone,
       note: 'Быстро ответим, поможем выбрать роллы и оформим доставку',
     },
     {
       icon: <MdLocationOn />,
       name: 'Адрес самовывоза',
-      value: 'г. Лида, ул. Машерова 12',
+      value: restaurant?.address,
       note: 'Заходите без очередей, рядом есть парковка',
     },
     {

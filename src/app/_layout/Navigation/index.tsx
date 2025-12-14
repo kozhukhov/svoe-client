@@ -42,10 +42,10 @@ export const Navigation = () => {
           <Paragraph
             color="#1a1a1a"
             fontWeight={600}
-            href="tel:+79999999999"
+            href={`tel:${activeRestaurant?.phone.replace(/ |-|\(|\)/g, '')}`}
             level={2}
           >
-            +7 (999) 999-99-99
+            {activeRestaurant?.phone}
           </Paragraph>
         </Styled.MobileMenuWrapper>
       </Styled.MobileToggle>

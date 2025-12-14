@@ -3,23 +3,27 @@
 import { Logo } from 'theme/components/Logo';
 import { Paragraph } from 'theme/components/Typography';
 
+import { useActiveRestaurant } from 'modules/restaurant/hooks';
+
 import { Section } from '../Section';
 
-import { MENU, SOCIALS } from './constants';
+import { getSocials, MENU } from './constants';
 import * as Styled from './styled';
 
-const PHONE_NUMBER_1_URL = 'tel:+79999999999';
-const PHONE_NUMBER_1_LABEL = '+7 (999) 999-99-99';
-
 export const Footer = () => {
+  const { activeRestaurant } = useActiveRestaurant();
+
   return (
     <Styled.Footer>
       <Section withoutMarginBottom>
         <Styled.Top>
           <Logo />
           <Styled.Contacts>
-            <Styled.Link href={PHONE_NUMBER_1_URL} level={2}>
-              {PHONE_NUMBER_1_LABEL}
+            <Styled.Link
+              href={`tel:${activeRestaurant?.phone.replace(/ |-|\(|\)/g, '')}`}
+              level={2}
+            >
+              {activeRestaurant?.phone}
             </Styled.Link>
           </Styled.Contacts>
         </Styled.Top>
@@ -53,7 +57,7 @@ export const Footer = () => {
             ул.Пераможцев 1Б пом.2
           </Paragraph>
           <Styled.Socials>
-            {SOCIALS.map((social) => (
+            {getSocials(activeRestaurant!).map((social) => (
               <Styled.SocialLink
                 $icon={social.icon}
                 href={social.url}

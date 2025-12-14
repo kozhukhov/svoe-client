@@ -102,6 +102,7 @@ export class APIServiceClass {
   get = <T>(url: string, options?: RequestOptions) => {
     return fetch(this.baseURL + url, {
       headers: this.headers,
+      credentials: 'include',
     }).then((result) => this.handleResponse<T>(result, options));
   };
 }

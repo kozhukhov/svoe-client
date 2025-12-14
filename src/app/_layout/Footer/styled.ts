@@ -42,6 +42,7 @@ export const Socials = styled.div`
 export const SocialLink = styled.a<{ $icon: string }>`
   width: 24px;
   height: 24px;
+  border-radius: 5px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

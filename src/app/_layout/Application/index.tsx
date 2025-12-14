@@ -9,6 +9,7 @@ import { FlexBox } from 'theme/components/FlexBox';
 import { PizzaLoader } from 'theme/components/PizzaLoader';
 import { Headline, Paragraph } from 'theme/components/Typography';
 
+import { useInitIIKO } from 'modules/iiko/hooks';
 import { useActiveRestaurant } from 'modules/restaurant/hooks';
 
 import { Footer } from '../Footer';
@@ -20,7 +21,14 @@ import * as Styled from './styled';
 const LOCAL_STORAGE_KEY = 'svoe-restaurant-location';
 
 export const Application = ({ children }: { children: React.ReactNode }) => {
+  const [isInitIIKO, setIsInitIIKO] = useState(false);
+  const [isInitIIKOError, setIsInitIIKOError] = useState(false);
   const [rejectLocation, setRejectLocation] = useState(false);
+
+  useInitIIKO({
+    onSuccess: () => setIsInitIIKO(true),
+    onError: () => setIsInitIIKOError(true),
+  });
 
   const { isRestaurantsLoading, restaurants, activeRestaurant } =
     useActiveRestaurant();
@@ -46,10 +54,20 @@ export const Application = ({ children }: { children: React.ReactNode }) => {
     redirect(`/${slug}`);
   }, []);
 
-  if (isRestaurantsLoading) {
+  if (isRestaurantsLoading || isInitIIKO) {
     return (
       <Styled.Wrapper>
         <PizzaLoader />
+      </Styled.Wrapper>
+    );
+  }
+
+  if (isInitIIKOError) {
+    return (
+      <Styled.Wrapper>
+        <Headline level={5} marginBottom="4px" textAlign="center">
+          Что-то пошло не так. Попробуйте позже.
+        </Headline>
       </Styled.Wrapper>
     );
   }

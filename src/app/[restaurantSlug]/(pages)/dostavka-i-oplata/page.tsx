@@ -7,23 +7,25 @@ import { InfoCard } from 'theme/components/InfoCard';
 import { MapWithActions } from 'theme/components/MapWithActions';
 import { Headline, Paragraph } from 'theme/components/Typography';
 
+import { useActiveRestaurant } from 'modules/restaurant/hooks';
+
 import { getDeliveryCards, ITEMS } from './constants';
 import * as Styled from './styled';
 
-const mapLink =
-  'https://yandex.by/maps/20648/lida/?text=%D0%9B%D0%B8%D0%B4%D0%B0%2C%20%D1%83%D0%BB.%20%D0%9C%D0%B0%D1%88%D0%B5%D1%80%D0%BE%D0%B2%D0%B0%2012';
-
 export default function DostavkaIPlatataPage() {
+  const { activeRestaurant } = useActiveRestaurant();
+
+  console.log(activeRestaurant);
   return (
     <Section>
       <SectionInfo
-        description="Доставка пиццы и роллов по Лиде — быстро и удобно. Бесплатная доставка от 35 рублей, удобные способы оплаты, понятный график работы и собственные курьеры. Забирайте заказ самовывозом или оформляйте доставку домой и в офис."
+        description={`Доставка пиццы и роллов по городу ${activeRestaurant?.city} - быстро и удобно. Бесплатная доставка от ${activeRestaurant?.deliveryMinFreeSum?.toFixed(2)} BYN, удобные способы оплаты, понятный график работы и собственные курьеры. Забирайте заказ самовывозом или оформляйте доставку домой и в офис.`}
         label="Доставка и оплата"
-        title="Доставка и оплата в Лиде"
+        title={`Доставка и оплата в городе ${activeRestaurant?.city}`}
       />
 
       <Styled.InfoGrid>
-        {getDeliveryCards().map((card) => (
+        {getDeliveryCards(activeRestaurant!).map((card) => (
           <InfoCard
             icon={card.icon}
             key={card.name}
@@ -53,7 +55,7 @@ export default function DostavkaIPlatataPage() {
             ))}
           </FlexBox>
         </div>
-        <MapWithActions mapLink={mapLink} />
+        <MapWithActions mapLink={activeRestaurant?.deliveryZoneMapUrl || ''} />
       </Styled.MapCard>
     </Section>
   );
