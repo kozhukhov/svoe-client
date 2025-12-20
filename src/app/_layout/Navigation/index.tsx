@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { BsBasket } from 'react-icons/bs';
+import { MdLocalPhone } from 'react-icons/md';
 import { usePathname } from 'next/navigation';
 import { Logo } from 'theme/components/Logo';
 import { Paragraph } from 'theme/components/Typography';
@@ -26,38 +27,45 @@ export const Navigation = () => {
     setIsOpen(!isOpen);
   };
 
+  const onCloseMenu = () => {
+    setIsOpen(false);
+  };
+
   const menu = (
     <Styled.Section>
       <Logo small />
 
-      <Styled.MobileToggle $isOpen={isOpen} onClick={toggleMenu}>
-        <Styled.MobileMenuWrapper $isOpen={isOpen}>
-          <Styled.Menu>
-            {MENU.map((menu) => (
-              <Styled.MenuItem
-                $active={pathname.includes(menu.url) && menu.url !== '/'}
-                href={`/${activeRestaurant?.slug}/${menu.url}`}
-                key={menu.title}
-              >
-                {menu.title}
-              </Styled.MenuItem>
-            ))}
-          </Styled.Menu>
+      <Styled.MobileMenuWrapper $isOpen={isOpen}>
+        <Styled.Menu>
+          {MENU.map((menu) => (
+            <Styled.MenuItem
+              $active={pathname.includes(menu.url) && menu.url !== '/'}
+              href={`/${activeRestaurant?.slug}/${menu.url}`}
+              key={menu.title}
+              onClick={onCloseMenu}
+            >
+              {menu.title}
+            </Styled.MenuItem>
+          ))}
+        </Styled.Menu>
+      </Styled.MobileMenuWrapper>
 
-          {/* <Paragraph
-            color="#1a1a1a"
-            fontWeight={600}
-            href={`tel:${activeRestaurant?.phone.replace(/ |-|\(|\)/g, '')}`}
-            level={2}
-          >
-            {activeRestaurant?.phone}
-          </Paragraph> */}
-        </Styled.MobileMenuWrapper>
-      </Styled.MobileToggle>
       <Styled.BasketWrapper>
         <BsBasket size={20} />
         <Styled.BasketBadge>{basketCount}</Styled.BasketBadge>
       </Styled.BasketWrapper>
+
+      <Styled.PhoneWrapper align="center" gap="8px">
+        <MdLocalPhone size={20} />
+        <Paragraph
+          color="#1a1a1a"
+          fontWeight={600}
+          href={`tel:${activeRestaurant?.phone.replace(/ |-|\(|\)/g, '')}`}
+          level={2}
+        >
+          {activeRestaurant?.phone}
+        </Paragraph>
+      </Styled.PhoneWrapper>
     </Styled.Section>
   );
 
@@ -69,10 +77,19 @@ export const Navigation = () => {
         {menu}
       </Styled.StickyNavigation>
       <Styled.MobileMenu>
-        {MOBILE_MENU.map(({ title, Icon }) => (
-          <Styled.MobileMenuItem key={title}>
+        {MOBILE_MENU.map(({ title, Icon, url }) => (
+          <Styled.MobileMenuItem
+            {...(url
+              ? {
+                href: `/${activeRestaurant?.slug}/${url}`,
+                $active: pathname.includes(url) && url !== '/',
+                onClick: onCloseMenu,
+              }
+              : { onClick: toggleMenu })}
+            key={title}
+          >
             <Icon size={20} />
-            <Paragraph fontWeight={600} level={2}>
+            <Paragraph color="inherit" fontWeight={600} level={2}>
               {title}
             </Paragraph>
           </Styled.MobileMenuItem>

@@ -1,6 +1,9 @@
-import { BsBasket, BsGift } from 'react-icons/bs';
-import { FiMapPin } from 'react-icons/fi';
-import { IoFastFoodOutline } from 'react-icons/io5';
+import {
+  MdMoreHoriz,
+  MdOutlineCardGiftcard,
+  MdOutlineFastfood,
+  MdOutlineShoppingBasket,
+} from 'react-icons/md';
 
 export const MENU = [
   {
@@ -25,21 +28,20 @@ export const MOBILE_MENU = [
   {
     title: 'Меню',
     url: '/',
-    Icon: IoFastFoodOutline,
+    Icon: MdOutlineFastfood,
   },
   {
     title: 'Корзина',
-    url: '/',
-    Icon: BsBasket,
+    url: '/korzina',
+    Icon: MdOutlineShoppingBasket,
   },
   {
     title: 'Акции',
     url: '/',
-    Icon: BsGift,
+    Icon: MdOutlineCardGiftcard,
   },
   {
-    title: 'Контакты',
-    url: '/dostavka-i-oplata',
-    Icon: FiMapPin,
+    title: 'Еще',
+    Icon: MdMoreHoriz,
   },
 ];

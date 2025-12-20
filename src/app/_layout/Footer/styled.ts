@@ -9,7 +9,8 @@ export const Footer = styled.footer`
 
   ${({ theme: { media } }) => css`
     ${media.tablet} {
-      padding-bottom: 50px;
+      padding-bottom: 100px;
+      display: none;
     }
 
     ${media.mobile} {
@@ -34,6 +35,10 @@ export const Bottom = styled.div`
       gap: 10px;
       padding: 20px 0px;
       margin-top: 20px;
+
+      > div {
+        text-align: center;
+      }
     }
   `}
 `;

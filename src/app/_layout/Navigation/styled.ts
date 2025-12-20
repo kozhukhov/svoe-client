@@ -1,4 +1,5 @@
 import { css, styled } from 'styled-components';
+import { FlexBox } from 'theme/components/FlexBox';
 import { Paragraph } from 'theme/components/Typography';
 
 import { Section as BaseSection } from '../Section';
@@ -56,6 +57,7 @@ export const StickyNavigation = styled.div<{ $active: boolean }>`
 export const Section = styled(BaseSection).attrs({
   withoutMarginBottom: true,
 })`
+  z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -130,18 +132,18 @@ export const MobileMenuWrapper = styled.div<{ $isOpen: boolean }>`
     ${media.tablet} {
       position: absolute;
       display: block;
-      border-radius: 12px;
       padding: 20px;
       top: 60px;
+      z-index: -1;
       right: 0;
-      width: 270px;
+      width: 100%;
+      box-sizing: border-box;
       background-color: #fff;
       transition: all 0.3s ease-in-out;
       opacity: ${$isOpen ? '1' : '0'};
       visibility: ${$isOpen ? 'visible' : 'hidden'};
-      transform: ${$isOpen
-        ? 'translateY(0) scale(1)'
-        : 'translateY(-10px) scale(0.95)'};
+      transform: ${$isOpen ? 'translateY(0)' : 'translateY(-300px)'};
+      border: 1px solid rgba(0, 0, 0, 0.1);
     }
   `}
 `;
@@ -178,6 +180,12 @@ export const BasketWrapper = styled.div`
   svg {
     display: block;
   }
+
+  ${({ theme: { media } }) => css`
+    ${media.tablet} {
+      display: none;
+    }
+  `}
 `;
 
 export const BasketBadge = styled.span`
@@ -224,12 +232,32 @@ export const MobileMenu = styled(Section).attrs({
   `}
 `;
 
-export const MobileMenuItem = styled.div`
-  width: 60px;
+export const MobileMenuItem = styled(Paragraph)<{ $active?: boolean }>`
+  width: fit-content;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   gap: 4px;
   cursor: pointer;
+
+  ${({ $active }) => css`
+    ${$active
+      ? css`
+          color: rgb(249, 198, 70);
+        `
+      : css`
+          color: #1a1a1a;
+        `}
+  `}
+`;
+
+export const PhoneWrapper = styled(FlexBox)`
+  display: none;
+
+  ${({ theme: { media } }) => css`
+    ${media.tablet} {
+      display: flex;
+    }
+  `}
 `;
