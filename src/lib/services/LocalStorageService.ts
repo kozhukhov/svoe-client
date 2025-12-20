@@ -6,13 +6,18 @@ interface StorageService {
 
 export class LocalStorageServiceClass implements StorageService {
   get<T>(key: string): T | null {
-    const item = window.localStorage.getItem(key);
+    try {
+      const item = window.localStorage.getItem(key);
 
-    if (!item) {
+      if (!item) {
+        return null;
+      }
+
+      return JSON.parse(item) as T;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
       return null;
     }
-
-    return JSON.parse(item) as T;
   }
 
   set<T>(key: string, value: T): T {

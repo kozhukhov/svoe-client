@@ -1,5 +1,4 @@
 import { css, styled } from 'styled-components';
-import { SecondaryButton } from 'theme/components/Button';
 import { Paragraph } from 'theme/components/Typography';
 
 import { Section as BaseSection } from '../Section';
@@ -107,6 +106,7 @@ export const MobileToggle = styled.div<{ $isOpen: boolean }>`
       background-color: transparent;
       border-radius: 8px;
       border: 1px solid #fff;
+
       cursor: pointer;
 
       &:hover {
@@ -164,10 +164,72 @@ export const Blur = styled.div`
   `}
 `;
 
-export const Action = styled(SecondaryButton)`
+export const BasketWrapper = styled.div`
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: 40px;
+  border-radius: 12px;
+  background-color: rgba(249, 198, 70, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 0 10px;
+  svg {
+    display: block;
+  }
+`;
+
+export const BasketBadge = styled.span`
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background-color: #ff4d4f;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 0 0 2px #fff;
+`;
+
+export const MobileMenu = styled(Section).attrs({
+  withoutMarginBottom: true,
+})`
+  display: none;
+  height: 80px;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: #fff;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  align-items: center;
+  justify-content: space-between;
+
   ${({ theme: { media } }) => css`
     ${media.tablet} {
-      width: 100%;
+      display: flex;
     }
   `}
+`;
+
+export const MobileMenuItem = styled.div`
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
 `;

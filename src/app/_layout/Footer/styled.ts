@@ -8,6 +8,10 @@ export const Footer = styled.footer`
   padding-top: 30px;
 
   ${({ theme: { media } }) => css`
+    ${media.tablet} {
+      padding-bottom: 50px;
+    }
+
     ${media.mobile} {
       padding-top: 20px;
       border-radius: 15px 15px 0 0;

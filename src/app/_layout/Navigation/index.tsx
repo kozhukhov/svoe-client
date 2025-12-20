@@ -1,13 +1,14 @@
 'use client';
 
 import { useState } from 'react';
+import { BsBasket } from 'react-icons/bs';
 import { usePathname } from 'next/navigation';
 import { Logo } from 'theme/components/Logo';
 import { Paragraph } from 'theme/components/Typography';
 
 import { useActiveRestaurant } from 'modules/restaurant/hooks';
 
-import { MENU } from './constants';
+import { MENU, MOBILE_MENU } from './constants';
 import * as Styled from './styled';
 import { useScroll } from './useScroll';
 
@@ -16,6 +17,8 @@ export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { activeRestaurant } = useActiveRestaurant();
+
+  const basketCount = 0;
 
   const pathname = usePathname();
 
@@ -26,6 +29,7 @@ export const Navigation = () => {
   const menu = (
     <Styled.Section>
       <Logo small />
+
       <Styled.MobileToggle $isOpen={isOpen} onClick={toggleMenu}>
         <Styled.MobileMenuWrapper $isOpen={isOpen}>
           <Styled.Menu>
@@ -39,16 +43,21 @@ export const Navigation = () => {
               </Styled.MenuItem>
             ))}
           </Styled.Menu>
-          <Paragraph
+
+          {/* <Paragraph
             color="#1a1a1a"
             fontWeight={600}
             href={`tel:${activeRestaurant?.phone.replace(/ |-|\(|\)/g, '')}`}
             level={2}
           >
             {activeRestaurant?.phone}
-          </Paragraph>
+          </Paragraph> */}
         </Styled.MobileMenuWrapper>
       </Styled.MobileToggle>
+      <Styled.BasketWrapper>
+        <BsBasket size={20} />
+        <Styled.BasketBadge>{basketCount}</Styled.BasketBadge>
+      </Styled.BasketWrapper>
     </Styled.Section>
   );
 
@@ -59,6 +68,16 @@ export const Navigation = () => {
       <Styled.StickyNavigation $active={isScrolled}>
         {menu}
       </Styled.StickyNavigation>
+      <Styled.MobileMenu>
+        {MOBILE_MENU.map(({ title, Icon }) => (
+          <Styled.MobileMenuItem key={title}>
+            <Icon size={20} />
+            <Paragraph fontWeight={600} level={2}>
+              {title}
+            </Paragraph>
+          </Styled.MobileMenuItem>
+        ))}
+      </Styled.MobileMenu>
     </>
   );
 };

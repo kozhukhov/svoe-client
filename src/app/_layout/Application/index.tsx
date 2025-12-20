@@ -21,14 +21,10 @@ import * as Styled from './styled';
 const LOCAL_STORAGE_KEY = 'svoe-restaurant-location';
 
 export const Application = ({ children }: { children: React.ReactNode }) => {
-  const [isInitIIKO, setIsInitIIKO] = useState(false);
-  const [isInitIIKOError, setIsInitIIKOError] = useState(false);
   const [rejectLocation, setRejectLocation] = useState(false);
 
-  useInitIIKO({
-    onSuccess: () => setIsInitIIKO(true),
-    onError: () => setIsInitIIKOError(true),
-  });
+  const { isLoading: isInitIIKOLoading, error: isInitIIKOError } =
+    useInitIIKO();
 
   const { isRestaurantsLoading, restaurants, activeRestaurant } =
     useActiveRestaurant();
@@ -54,7 +50,7 @@ export const Application = ({ children }: { children: React.ReactNode }) => {
     redirect(`/${slug}`);
   }, []);
 
-  if (isRestaurantsLoading || isInitIIKO) {
+  if (isRestaurantsLoading || isInitIIKOLoading) {
     return (
       <Styled.Wrapper>
         <PizzaLoader />
