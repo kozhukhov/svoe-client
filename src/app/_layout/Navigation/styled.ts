@@ -25,11 +25,11 @@ export const Navigation = styled.div`
   ${navigationStyle}
 
   position: relative;
-  margin-bottom: 100px;
+  margin-bottom: 60px;
 
   ${({ theme: { media } }) => css`
     ${media.tablet} {
-      margin-bottom: 60px;
+      margin-bottom: 20px;
     }
   `}
 `;

@@ -5,15 +5,21 @@ import { PageLayout } from 'app/_layout/PageLayout';
 import { Section } from 'app/_layout/Section';
 import { SectionInfo } from 'app/_layout/SectionInfo';
 import { formatToLongDate } from 'lib/utils';
+import { useRouter } from 'next/navigation';
 import { PrimaryButton } from 'theme/components/Button';
 import { Skeleton } from 'theme/components/Skeleton';
 import { Paragraph } from 'theme/components/Typography';
 
+import { useActiveRestaurant } from 'modules/restaurant/hooks';
 import { useReviews } from 'modules/review/hooks';
 
 import * as Styled from './styled';
 
 export default function OtzyviPage() {
+  const router = useRouter();
+
+  const { activeRestaurant } = useActiveRestaurant();
+
   const {
     reviews,
     reviewsHasMore,
@@ -35,7 +41,12 @@ export default function OtzyviPage() {
     <Section>
       <SectionInfo
         center
-        content={<PrimaryButton label="Оставить отзыв" />}
+        content={
+          <PrimaryButton
+            label="Оставить отзыв"
+            onClick={() => router.push(`/${activeRestaurant?.slug}/otzyvi/add`)}
+          />
+        }
         description="Мы внимательно читаем каждое мнение, чтобы делать наши блюда и сервис ещё лучше."
         title={
           <>

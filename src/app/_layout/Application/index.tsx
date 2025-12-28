@@ -120,10 +120,10 @@ export const Application = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <>
+    <Styled.Application>
       <Navigation />
       <Main>{children}</Main>
       <Footer />
-    </>
+    </Styled.Application>
   );
 };

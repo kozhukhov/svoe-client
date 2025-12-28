@@ -21,3 +21,7 @@ export const Dialog = styled.div`
   border: 1px solid #e0e0e0;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 `;
+
+export const Application = styled.div`
+  overflow: hidden;
+`;
