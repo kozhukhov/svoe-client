@@ -22,6 +22,7 @@ export const Textarea = styled.textarea<{
   ${baseFieldStyles}
   height: auto;
   resize: none;
+  margin-bottom: -6px;
 `;
 
 export const Wrapper = styled.div`

@@ -5,3 +5,12 @@ export type ReviewDTO = {
   date: Date;
   id: string;
 };
+
+export type CreateReviewData = {
+  name: string;
+  rating?: number;
+  content: string;
+  phone: string;
+  isPublic: boolean;
+  restaurantId: string;
+};

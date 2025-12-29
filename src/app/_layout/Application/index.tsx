@@ -15,6 +15,7 @@ import { useActiveRestaurant } from 'modules/restaurant/hooks';
 import { Footer } from '../Footer';
 import { Main } from '../Main';
 import { Navigation } from '../Navigation';
+import { SnackbarsProvider } from '../Snackbars';
 
 import * as Styled from './styled';
 
@@ -122,6 +123,7 @@ export const Application = ({ children }: { children: React.ReactNode }) => {
   return (
     <Styled.Application>
       <Navigation />
+      <SnackbarsProvider />
       <Main>{children}</Main>
       <Footer />
     </Styled.Application>

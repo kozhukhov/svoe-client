@@ -2,10 +2,11 @@ import {
   APIResultWithPagination,
   apiService,
   getURLWithQueryParams,
+  ServiceWithBody,
   ServiceWithPagination,
 } from 'lib/services/APIService';
 
-import { ReviewDTO } from './dto';
+import { CreateReviewData, ReviewDTO } from './dto';
 
 export const getReviews: ServiceWithPagination<
   {
@@ -26,3 +27,12 @@ export const getReviews: ServiceWithPagination<
     return result;
   },
 };
+
+export const createReview: ServiceWithBody<void, CreateReviewData, ReviewDTO> =
+  {
+    getUrl: () => 'reviews',
+    request: async (url, { arg }) => {
+      const response = await apiService.post<ReviewDTO>(url, arg);
+      return response;
+    },
+  };
