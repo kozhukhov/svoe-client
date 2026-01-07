@@ -1,12 +1,13 @@
 'use client';
 
 import { Section } from 'app/_layout/Section';
+import { useFetch } from 'lib/services/APIService';
 import { Headline, Paragraph } from 'theme/components/Typography';
 
-import * as Styled from './styled';
-// import { useFetch } from 'lib/services/APIService';
+import { getMenu } from 'modules/menu/service';
 
-// import { getMenu } from 'modules/menu/service';
+import { ItemCard } from './_containers/ItemCrad';
+import * as Styled from './styled';
 
 const CATEGORIES = [
   {
@@ -36,7 +37,10 @@ const CATEGORIES = [
 ];
 
 export default function MainPage() {
-  // const s = useFetch(getMenu.getUrl({ restaurantID: '1' }), getMenu.request);
+  const { data: menu } = useFetch(
+    getMenu.getUrl({ restaurantID: '1' }),
+    getMenu.request,
+  );
 
   return (
     <div>
@@ -54,6 +58,18 @@ export default function MainPage() {
           ))}
         </Styled.Categories>
       </Section>
+      {menu?.categories.map((category) => (
+        <Section key={category.id}>
+          <Headline level={4} marginBottom="16px">
+            {category.name}
+          </Headline>
+          <Styled.Items>
+            {category.items.map((item) => (
+              <ItemCard item={item} key={item.id} />
+            ))}
+          </Styled.Items>
+        </Section>
+      ))}
     </div>
   );
 }

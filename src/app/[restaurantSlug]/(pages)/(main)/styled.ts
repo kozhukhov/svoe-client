@@ -20,3 +20,9 @@ export const CategoryCard = styled.div`
   box-sizing: border-box;
   padding: 4px 8px;
 `;
+
+export const Items = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+`;

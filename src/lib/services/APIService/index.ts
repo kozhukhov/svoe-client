@@ -42,6 +42,11 @@ export class APIServiceClass {
     };
   }
 
+  init = (token: string) => {
+    this.token = token;
+    this.headers['Authorization'] = `Bearer ${token}`;
+  };
+
   handleResponse = async <T>(
     result: Response,
     options?: RequestOptions,

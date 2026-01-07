@@ -10,14 +10,14 @@ export const getMenu: Service<
   {
     restaurantID?: string;
   },
-  { items: MenuDTO[] }
+  { categories: MenuDTO[] }
 > = {
   getUrl: (params) =>
     getURLWithQueryParams('menu', {
       restaurant_id: params?.restaurantID?.toString(),
     }),
   request: async (url) => {
-    const result = await apiService.get<{ items: MenuDTO[] }>(url);
+    const result = await apiService.get<{ categories: MenuDTO[] }>(url);
 
     return result;
   },
