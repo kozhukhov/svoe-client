@@ -84,7 +84,7 @@ export const MenuItem = styled(Paragraph).attrs({
   ${({ theme: { media }, $active }) => css`
     ${$active
       ? css`
-          border-bottom: 2px solid rgb(249, 198, 70);
+          border-bottom: 2px solid #3f8f4a;
         `
       : css`
           border-bottom: 2px solid transparent;
@@ -166,6 +166,11 @@ export const Blur = styled.div`
   `}
 `;
 
+export const BasketContainer = styled.div`
+  min-width: 124px;
+  text-align: right;
+`;
+
 export const BasketWrapper = styled.div`
   position: relative;
   display: inline-flex;
@@ -174,11 +179,14 @@ export const BasketWrapper = styled.div`
   width: fit-content;
   height: 40px;
   border-radius: 12px;
-  background-color: rgba(249, 198, 70, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #eaf4ea;
+  border: 1px solid #d4e9d4;
   padding: 0 10px;
-  svg {
-    display: block;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+
+  &:hover {
+    background-color: #d4e9d4;
   }
 
   ${({ theme: { media } }) => css`
@@ -188,10 +196,7 @@ export const BasketWrapper = styled.div`
   `}
 `;
 
-export const BasketBadge = styled.span`
-  position: absolute;
-  top: -9px;
-  right: -9px;
+export const BasketBadge = styled.div`
   min-width: 18px;
   height: 18px;
   padding: 0 5px;
@@ -203,7 +208,6 @@ export const BasketBadge = styled.span`
   justify-content: center;
   font-size: 11px;
   font-weight: 700;
-  line-height: 1;
   box-shadow: 0 0 0 2px #fff;
 `;
 
@@ -260,4 +264,14 @@ export const PhoneWrapper = styled(FlexBox)`
       display: flex;
     }
   `}
+`;
+
+export const BasketCount = styled.div`
+  border-left: 1px solid #d4e9d4;
+  margin-left: 8px;
+  padding-left: 8px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

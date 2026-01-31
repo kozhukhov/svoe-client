@@ -87,7 +87,7 @@ const TextLink = styled(BaseLink) <ElementProps>`
   text-decoration: none;
 
   &:hover {
-    color: rgb(249, 198, 70);
+    color: #3f8f4a;
   }
 `;
 

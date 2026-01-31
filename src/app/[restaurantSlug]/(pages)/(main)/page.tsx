@@ -7,6 +7,7 @@ import { Headline, Paragraph } from 'theme/components/Typography';
 import { getMenu } from 'modules/menu/service';
 
 import { ItemCard } from './_containers/ItemCrad';
+// import { PromoBanners } from './_containers/PromoBanners';
 import * as Styled from './styled';
 
 const CATEGORIES = [
@@ -44,6 +45,9 @@ export default function MainPage() {
 
   return (
     <div>
+      {/* <PromoBanners /> */}
+      <div>Истории</div>
+      <div>Новинки</div>
       <Section>
         <Headline level={5} marginBottom="16px">
           Категории

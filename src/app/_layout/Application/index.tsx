@@ -2,6 +2,7 @@
 
 import React, { useCallback, useMemo, useState } from 'react';
 import { IoLocationOutline } from 'react-icons/io5';
+import { BasketProvider } from 'lib/context/basket';
 import { LocalStorageService } from 'lib/services/LocalStorageService';
 import { redirect } from 'next/navigation';
 import { PrimaryButton, SecondaryButton } from 'theme/components/Button';
@@ -12,6 +13,7 @@ import { Headline, Paragraph } from 'theme/components/Typography';
 import { useInitIIKO } from 'modules/iiko/hooks';
 import { useActiveRestaurant } from 'modules/restaurant/hooks';
 
+import { Basket } from '../Basket';
 import { Footer } from '../Footer';
 import { Main } from '../Main';
 import { Navigation } from '../Navigation';
@@ -23,6 +25,7 @@ const LOCAL_STORAGE_KEY = 'svoe-restaurant-location';
 
 export const Application = ({ children }: { children: React.ReactNode }) => {
   const [rejectLocation, setRejectLocation] = useState(false);
+  const [isBasketOpen, setIsBasketOpen] = useState(false);
 
   const { isLoading: isInitIIKOLoading, error: isInitIIKOError } =
     useInitIIKO();
@@ -122,10 +125,13 @@ export const Application = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Styled.Application>
-      <Navigation />
-      <SnackbarsProvider />
-      <Main>{children}</Main>
-      <Footer />
+      <BasketProvider>
+        <Navigation onOpenBasket={() => setIsBasketOpen(true)} />
+        <SnackbarsProvider />
+        <Main>{children}</Main>
+        <Footer />
+        <Basket isOpen={isBasketOpen} onClose={() => setIsBasketOpen(false)} />
+      </BasketProvider>
     </Styled.Application>
   );
 };

@@ -4,6 +4,20 @@ export enum MeasureUnitType {
   LITER = 'LITER',
 }
 
+export type MenuItemModifierGroupDTO = {
+  id: string;
+  name: string;
+  restrictions: {
+    minQuantity: number;
+    maxQuantity: number;
+  };
+  items: {
+    name: string;
+    price: number;
+    id: string;
+  }[];
+};
+
 export type MenuItemSizeDTO = {
   id: string;
   isDefault: boolean;
@@ -13,6 +27,7 @@ export type MenuItemSizeDTO = {
   sku: string;
   weight: number;
   image: string;
+  itemModifierGroups: MenuItemModifierGroupDTO[];
 };
 
 export type MenuItemDTO = {

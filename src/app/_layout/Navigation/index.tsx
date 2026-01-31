@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { BsBasket } from 'react-icons/bs';
+import { FC, useState } from 'react';
 import { MdLocalPhone } from 'react-icons/md';
+import { useBasket } from 'lib/context/basket';
 import { usePathname } from 'next/navigation';
 import { Logo } from 'theme/components/Logo';
 import { Paragraph } from 'theme/components/Typography';
@@ -13,13 +13,17 @@ import { MENU, MOBILE_MENU } from './constants';
 import * as Styled from './styled';
 import { useScroll } from './useScroll';
 
-export const Navigation = () => {
+type Props = {
+  onOpenBasket: () => void;
+};
+
+export const Navigation: FC<Props> = ({ onOpenBasket }) => {
   const isScrolled = useScroll();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { activeRestaurant } = useActiveRestaurant();
+  const { count } = useBasket();
 
-  const basketCount = 0;
+  const { activeRestaurant } = useActiveRestaurant();
 
   const pathname = usePathname();
 
@@ -50,10 +54,18 @@ export const Navigation = () => {
         </Styled.Menu>
       </Styled.MobileMenuWrapper>
 
-      <Styled.BasketWrapper>
-        <BsBasket size={20} />
-        <Styled.BasketBadge>{basketCount}</Styled.BasketBadge>
-      </Styled.BasketWrapper>
+      <Styled.BasketContainer>
+        <Styled.BasketWrapper onClick={onOpenBasket}>
+          <Paragraph color="#3f8f4a" fontWeight={600} level={3}>
+            Корзина
+          </Paragraph>
+          {count > 0 && (
+            <Styled.BasketCount>
+              <Styled.BasketBadge>{count}</Styled.BasketBadge>
+            </Styled.BasketCount>
+          )}
+        </Styled.BasketWrapper>
+      </Styled.BasketContainer>
 
       <Styled.PhoneWrapper align="center" gap="8px">
         <MdLocalPhone size={20} />

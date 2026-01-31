@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { FlexBox } from 'theme/components/FlexBox';
 import { Headline, Paragraph } from 'theme/components/Typography';
 
 export const Card = styled.div`
@@ -46,14 +47,15 @@ export const Name = styled(Headline).attrs({
 `;
 
 export const Description = styled(Paragraph).attrs({
-  level: 2,
+  level: 3,
 })`
-  line-height: 20px;
+  line-height: 18px;
+  hyphens: auto;
 
   ${({ theme: { media } }) => css`
     ${media.tablet} {
       font-size: 14px;
-      line-height: 17px;
+      line-height: 16px;
     }
   `}
 `;
@@ -67,6 +69,17 @@ export const Price = styled(Paragraph).attrs({
     font-weight: 800;
     color: #1d2939;
   }
+
+  ${({ theme: { media } }) => css`
+    ${media.tablet} {
+      font-size: 12px;
+
+      span {
+        font-size: 18px;
+        line-height: 22px;
+      }
+    }
+  `}
 `;
 
 export const Info = styled.div`
@@ -83,6 +96,52 @@ export const Info = styled.div`
     ${media.tablet} {
       padding: 12px;
       flex: 1;
+    }
+  `}
+`;
+
+export const ActionButton = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #d4e9d4;
+  border-radius: 14px;
+  overflow: auto;
+  height: 38px;
+  overflow: hidden;
+  > button {
+    width: 40px;
+    font-size: 20px;
+    font-weight: 400;
+    border-radius: 0px;
+    margin-bottom: 2px;
+  }
+`;
+
+export const PriceContainer = styled(FlexBox).attrs({
+  align: 'center',
+  gap: '8px',
+  justify: 'space-between',
+  marginBottom: '12px',
+  marginTop: '24px',
+})`
+  margin-bottom: 12px;
+  margin-top: 24px;
+
+  ${({ theme: { media } }) => css`
+    ${media.tablet} {
+      margin-bottom: 4px;
+      margin-top: 4px;
+    }
+  `}
+`;
+
+export const Measure = styled(Paragraph).attrs({
+  level: 2,
+})`
+  ${({ theme: { media } }) => css`
+    ${media.tablet} {
+      font-size: 12px;
     }
   `}
 `;

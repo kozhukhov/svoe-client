@@ -68,15 +68,13 @@ const primaryButtonStyle = css<Props>`
   background-color: #eaf4ea;
   color: #3f8f4a;
 
-  /* background: rgb(249, 198, 70);
-
   &:not(:disabled):hover {
-    background: rgb(249, 198, 70, 0.8);
+    background-color: #d4e9d4;
   }
 
   &:not(:disabled):active {
-    background: rgb(249, 198, 70, 0.6);
-  } */
+    background-color: #c1e1c1;
+  }
 `;
 
 const secondaryButtonStyle = css<Props>`
