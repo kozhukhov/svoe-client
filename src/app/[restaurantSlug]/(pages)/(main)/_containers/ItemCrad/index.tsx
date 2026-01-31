@@ -107,6 +107,13 @@ export const ItemCard: FC<Props> = ({ item }) => {
                       value: item.id,
                     }))
                 }
+                setValue={(value: string) =>
+                  setActiveSize(
+                    item.itemSizes.find((size) => size.id === value) ??
+                    item.itemSizes[0],
+                  )
+                }
+                value={activeSize.id}
               />
             ))}
           <Styled.PriceContainer>
