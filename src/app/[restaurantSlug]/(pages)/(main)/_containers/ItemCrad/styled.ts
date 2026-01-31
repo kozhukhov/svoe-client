@@ -8,7 +8,14 @@ export const Card = styled.div`
   background-color: #fff;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+`;
+
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  width: 100%;
 
   ${({ theme: { media } }) => css`
     ${media.tablet} {
@@ -27,7 +34,7 @@ export const Image = styled.img`
 
   ${({ theme: { media } }) => css`
     ${media.tablet} {
-      width: 40%;
+      width: 50%;
     }
   `}
 `;
@@ -83,7 +90,7 @@ export const Price = styled(Paragraph).attrs({
 `;
 
 export const Info = styled.div`
-  padding: 0px 16px 16px;
+  padding: 0px 16px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -94,7 +101,7 @@ export const Info = styled.div`
 
   ${({ theme: { media } }) => css`
     ${media.tablet} {
-      padding: 12px;
+      padding: 12px 12px 0px;
       flex: 1;
     }
   `}
@@ -118,20 +125,27 @@ export const ActionButton = styled.div`
   }
 `;
 
+export const Bottom = styled.div`
+  padding: 16px;
+
+  ${({ theme: { media } }) => css`
+    ${media.tablet} {
+      padding: 12px;
+    }
+  `}
+`;
+
 export const PriceContainer = styled(FlexBox).attrs({
   align: 'center',
   gap: '8px',
   justify: 'space-between',
   marginBottom: '12px',
-  marginTop: '24px',
 })`
   margin-bottom: 12px;
-  margin-top: 24px;
 
   ${({ theme: { media } }) => css`
     ${media.tablet} {
       margin-bottom: 4px;
-      margin-top: 4px;
     }
   `}
 `;

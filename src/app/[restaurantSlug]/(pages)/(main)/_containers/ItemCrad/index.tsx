@@ -64,19 +64,52 @@ export const ItemCard: FC<Props> = ({ item }) => {
 
   return (
     <Styled.Card>
-      <Styled.Image src={activeSize.image} />
-      <Styled.Info>
-        <div>
-          <Styled.Name>{item.name}</Styled.Name>
-          <Styled.Description>{item.description}</Styled.Description>
-        </div>
-        <div>
-          {hasSizes && (
+      <Styled.Wrapper>
+        <Styled.Image src={activeSize.image} />
+        <Styled.Info>
+          <div>
+            <Styled.Name>{item.name}</Styled.Name>
+            <Styled.Description>{item.description}</Styled.Description>
+          </div>
+        </Styled.Info>
+      </Styled.Wrapper>
+      <Styled.Bottom>
+        {hasSizes && (
+          <Switcher
+            options={item.itemSizes.map((size) => ({
+              label: size.name,
+              value: size.id,
+            }))}
+            setValue={(value: string) =>
+              setActiveSize(
+                item.itemSizes.find((size) => size.id === value) ??
+                item.itemSizes[0],
+              )
+            }
+            value={activeSize.id}
+          />
+        )}
+        {activeSize.itemModifierGroups &&
+          activeSize.itemModifierGroups.map((group) => (
             <Switcher
-              options={item.itemSizes.map((size) => ({
-                label: size.name,
-                value: size.id,
-              }))}
+              key={group.id}
+              options={
+                group.items.length === 1
+                  ? [
+                    {
+                      label: 'Классический',
+                      value: 'without',
+                    },
+                    {
+                      label: group.items[0].name,
+                      value: group.items[0].id,
+                    },
+                  ]
+                  : group.items.map((item) => ({
+                    label: item.name,
+                    value: item.id,
+                  }))
+              }
               setValue={(value: string) =>
                 setActiveSize(
                   item.itemSizes.find((size) => size.id === value) ??
@@ -85,46 +118,15 @@ export const ItemCard: FC<Props> = ({ item }) => {
               }
               value={activeSize.id}
             />
-          )}
-          {activeSize.itemModifierGroups &&
-            activeSize.itemModifierGroups.map((group) => (
-              <Switcher
-                key={group.id}
-                options={
-                  group.items.length === 1
-                    ? [
-                      {
-                        label: 'Без',
-                        value: 'without',
-                      },
-                      {
-                        label: group.items[0].name,
-                        value: group.items[0].id,
-                      },
-                    ]
-                    : group.items.map((item) => ({
-                      label: item.name,
-                      value: item.id,
-                    }))
-                }
-                setValue={(value: string) =>
-                  setActiveSize(
-                    item.itemSizes.find((size) => size.id === value) ??
-                    item.itemSizes[0],
-                  )
-                }
-                value={activeSize.id}
-              />
-            ))}
-          <Styled.PriceContainer>
-            <Styled.Price>
-              <span>{Number(activeSize.price).toFixed(2)}</span> руб
-            </Styled.Price>
-            <Styled.Measure>{measure}</Styled.Measure>
-          </Styled.PriceContainer>
-          {actionButton}
-        </div>
-      </Styled.Info>
+          ))}
+        <Styled.PriceContainer>
+          <Styled.Price>
+            <span>{Number(activeSize.price).toFixed(2)}</span> руб
+          </Styled.Price>
+          <Styled.Measure>{measure}</Styled.Measure>
+        </Styled.PriceContainer>
+        {actionButton}
+      </Styled.Bottom>
     </Styled.Card>
   );
 };
