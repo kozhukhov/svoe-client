@@ -1,15 +1,21 @@
-/* eslint-disable prettier/prettier */
 'use client';
 
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
 
 import { MenuItemDTO } from 'modules/menu/dto';
 
 type BasketItem = {
   productId: string;
+  productSizeId: string;
+  modifiers: {
+    groupId: string;
+    modifierId: string;
+    price: number;
+  }[];
   item: MenuItemDTO;
   price: number;
   count: number;
+  finalPrice: number;
 };
 
 type BasketContextType = {
@@ -28,12 +34,19 @@ export const BasketContext = createContext<BasketContextType>({
   count: 0,
 });
 
-export const useBasket = (props?: {
+export const useItemBasket = (props: {
   productId: string;
-  price: number;
+  productSizeId: string;
+  modifiers: {
+    groupId: string;
+    modifierId: string;
+    price: number;
+  }[];
   item: MenuItemDTO;
+  price: number;
 }): {
   count: number;
+  finalPrice: number;
   addItem: () => void;
   removeItem: () => void;
   clearBasket: () => void;
@@ -41,37 +54,85 @@ export const useBasket = (props?: {
 } => {
   const context = useContext(BasketContext);
 
-  if (props) {
-    const activeItem = context.items.find(
-      (i) => i.productId === props.productId,
-    );
+  console.log('BASKET', context.items);
+  const finalPrice =
+    props.price +
+    props.modifiers.reduce((acc, modifier) => acc + modifier.price, 0);
 
-    return {
-      count: activeItem?.count ?? 0,
-      items: context.items,
-      addItem: () => {
-        context.addItem({
-          productId: props.productId,
-          price: props.price,
-          count: 1,
-          item: props.item,
-        });
-      },
-      removeItem: () => {
-        context.removeItem({
-          productId: props.productId,
-          price: props.price,
-          count: 1,
-          item: props.item,
-        });
-      },
-      clearBasket: () => {
-        context.clearBasket();
-      },
-    };
-  }
+  const addItem = useCallback(() => {
+    context.addItem({
+      productId: props.productId,
+      productSizeId: props.productSizeId,
+      modifiers: props.modifiers,
+      count: 1,
+      item: props.item,
+      price: props.price,
+      finalPrice,
+    });
+  }, [
+    context,
+    finalPrice,
+    props.item,
+    props.modifiers,
+    props.price,
+    props.productId,
+    props.productSizeId,
+  ]);
+
+  const removeItem = useCallback(() => {
+    context.removeItem({
+      productId: props.productId,
+      productSizeId: props.productSizeId,
+      modifiers: props.modifiers,
+      count: 1,
+      item: props.item,
+      price: props.price,
+      finalPrice,
+    });
+  }, [
+    context,
+    finalPrice,
+    props.item,
+    props.modifiers,
+    props.price,
+    props.productId,
+    props.productSizeId,
+  ]);
+
+  const activeItem = context.items.find(
+    (i) =>
+      i.productId === props.productId &&
+      i.productSizeId === props.productSizeId &&
+      JSON.stringify(i.modifiers) === JSON.stringify(props.modifiers),
+  );
 
   return {
+    count: activeItem?.count ?? 0,
+    items: context.items,
+    finalPrice,
+    addItem,
+    removeItem,
+    clearBasket: () => {
+      context.clearBasket();
+    },
+  };
+};
+
+export const useBasket = (): {
+  count: number;
+  finalPrice: number;
+  addItem: () => void;
+  removeItem: () => void;
+  clearBasket: () => void;
+  items: BasketItem[];
+} => {
+  const context = useContext(BasketContext);
+
+  return {
+    finalPrice: context.items.reduce(
+      (acc, item) => acc + item.finalPrice * item.count,
+      0,
+    ),
     count: context.items.reduce((acc, item) => acc + item.count, 0),
     items: context.items,
     addItem: () => { },
@@ -84,12 +145,21 @@ export const BasketProvider = ({ children }: { children: React.ReactNode }) => {
   const [items, setBasket] = useState<BasketItem[]>([]);
 
   const addItem = (item: BasketItem) => {
-    const itemToAdd = items.find((i) => i.productId === item.productId);
+    const itemToAdd = items.find(
+      (i) =>
+        i.productId === item.productId &&
+        i.productSizeId === item.productSizeId &&
+        JSON.stringify(i.modifiers) === JSON.stringify(item.modifiers),
+    );
 
     if (itemToAdd) {
       setBasket((items) =>
         items.map((i) =>
-          i.productId === item.productId ? { ...i, count: i.count + 1 } : i,
+          i.productId === item.productId &&
+            i.productSizeId === item.productSizeId &&
+            JSON.stringify(i.modifiers) === JSON.stringify(item.modifiers)
+            ? { ...i, count: i.count + 1 }
+            : i,
         ),
       );
     } else {
@@ -98,12 +168,21 @@ export const BasketProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const removeItem = (item: BasketItem) => {
-    const itemToRemove = items.find((i) => i.productId === item.productId);
+    const itemToRemove = items.find(
+      (i) =>
+        i.productId === item.productId &&
+        i.productSizeId === item.productSizeId &&
+        JSON.stringify(i.modifiers) === JSON.stringify(item.modifiers),
+    );
 
     if (itemToRemove && itemToRemove.count > 1) {
       setBasket((items) =>
         items.map((i) =>
-          i.productId === item.productId ? { ...i, count: i.count - 1 } : i,
+          i.productId === item.productId &&
+            i.productSizeId === item.productSizeId &&
+            JSON.stringify(i.modifiers) === JSON.stringify(item.modifiers)
+            ? { ...i, count: i.count - 1 }
+            : i,
         ),
       );
     } else {

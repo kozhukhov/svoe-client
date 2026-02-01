@@ -1,6 +1,5 @@
-/* eslint-disable prettier/prettier */
-import { FC, useMemo, useState } from 'react';
-import { useBasket } from 'lib/context/basket';
+import { FC, useEffect, useMemo, useState } from 'react';
+import { useItemBasket } from 'lib/context/basket';
 import { PrimaryButton } from 'theme/components/Button';
 import { Switcher } from 'theme/components/Switcher';
 import { Paragraph } from 'theme/components/Typography';
@@ -15,16 +14,41 @@ type Props = {
 };
 
 export const ItemCard: FC<Props> = ({ item }) => {
-  console.log(item.name, item);
-
   const [activeSize, setActiveSize] = useState<MenuItemSizeDTO>(
     item.itemSizes.find((size) => size.isDefault) ?? item.itemSizes[0],
   );
+  const [activeModifiers, setActiveModifiers] = useState<
+    {
+      groupId: string;
+      modifierId: string;
+      price: number;
+    }[]
+  >(
+    activeSize.itemModifierGroups.map((group) => ({
+      groupId: group.id,
+      modifierId:
+        group.items.length === 1 ? 'without-modifier' : group.items[0].id,
+      price: group.items.length === 1 ? 0 : group.items[0].price,
+    })),
+  );
 
-  const { count, addItem, removeItem } = useBasket({
+  useEffect(() => {
+    setActiveModifiers(
+      activeSize.itemModifierGroups.map((group) => ({
+        groupId: group.id,
+        modifierId:
+          group.items.length === 1 ? 'without-modifier' : group.items[0].id,
+        price: group.items.length === 1 ? 0 : group.items[0].price,
+      })),
+    );
+  }, [activeSize]);
+
+  const { count, finalPrice, addItem, removeItem } = useItemBasket({
     productId: item.id,
-    price: Number(activeSize.price),
+    productSizeId: activeSize.id,
+    modifiers: activeModifiers,
     item,
+    price: activeSize.price,
   });
 
   const hasSizes = useMemo(() => item.itemSizes.length > 1, [item.itemSizes]);
@@ -50,30 +74,12 @@ export const ItemCard: FC<Props> = ({ item }) => {
       );
     }
 
-    // if (isTabletOrMobile) {
-    //   return (
-    //     <PrimaryButton
-    //       fullWidth
-    //       label={Number(activeSize.price).toFixed(2) + ' руб'}
-    //     />
-    //   );
-    // }
-
     return <PrimaryButton fullWidth label="В корзину" onClick={addItem} />;
   }, [count, addItem, removeItem]);
 
-  return (
-    <Styled.Card>
-      <Styled.Wrapper>
-        <Styled.Image src={activeSize.image} />
-        <Styled.Info>
-          <div>
-            <Styled.Name>{item.name}</Styled.Name>
-            <Styled.Description>{item.description}</Styled.Description>
-          </div>
-        </Styled.Info>
-      </Styled.Wrapper>
-      <Styled.Bottom>
+  const bottom = useMemo(
+    () => (
+      <>
         {hasSizes && (
           <Switcher
             options={item.itemSizes.map((size) => ({
@@ -97,8 +103,8 @@ export const ItemCard: FC<Props> = ({ item }) => {
                 group.items.length === 1
                   ? [
                     {
-                      label: 'Классический',
-                      value: 'without',
+                      label: 'Классика',
+                      value: 'without-modifier',
                     },
                     {
                       label: group.items[0].name,
@@ -111,22 +117,60 @@ export const ItemCard: FC<Props> = ({ item }) => {
                   }))
               }
               setValue={(value: string) =>
-                setActiveSize(
-                  item.itemSizes.find((size) => size.id === value) ??
-                  item.itemSizes[0],
+                setActiveModifiers((currentModifiers) =>
+                  currentModifiers.map((modifier) =>
+                    modifier.groupId === group.id
+                      ? {
+                        ...modifier,
+                        modifierId: value,
+                        price:
+                          group.items.find((item) => item.id === value)
+                            ?.price ?? 0,
+                      }
+                      : modifier,
+                  ),
                 )
               }
-              value={activeSize.id}
+              value={
+                activeModifiers.find(
+                  (modifier) => modifier.groupId === group.id,
+                )?.modifierId ?? ''
+              }
             />
           ))}
         <Styled.PriceContainer>
           <Styled.Price>
-            <span>{Number(activeSize.price).toFixed(2)}</span> руб
+            <span>{Number(finalPrice).toFixed(2)}</span> руб
           </Styled.Price>
           <Styled.Measure>{measure}</Styled.Measure>
         </Styled.PriceContainer>
         {actionButton}
-      </Styled.Bottom>
+      </>
+    ),
+    [
+      hasSizes,
+      item.itemSizes,
+      activeSize.id,
+      activeSize.itemModifierGroups,
+      finalPrice,
+      measure,
+      actionButton,
+      activeModifiers,
+    ],
+  );
+
+  return (
+    <Styled.Card>
+      <Styled.Wrapper>
+        <Styled.Image src={activeSize.image} />
+        <Styled.Info $hasDescription={!!item.description}>
+          <Styled.Name>{item.name}</Styled.Name>
+          <Styled.Description>
+            {item.description} {!item.description && bottom}
+          </Styled.Description>
+        </Styled.Info>
+      </Styled.Wrapper>
+      {item.description && <Styled.Bottom>{bottom}</Styled.Bottom>}
     </Styled.Card>
   );
 };

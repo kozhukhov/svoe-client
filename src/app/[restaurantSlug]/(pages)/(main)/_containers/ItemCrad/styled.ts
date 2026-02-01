@@ -79,29 +79,29 @@ export const Price = styled(Paragraph).attrs({
 
   ${({ theme: { media } }) => css`
     ${media.tablet} {
-      font-size: 12px;
-
-      span {
-        font-size: 18px;
-        line-height: 22px;
-      }
+      font-size: 14px;
     }
   `}
 `;
 
-export const Info = styled.div`
+export const Info = styled.div<{ $hasDescription: boolean }>`
   padding: 0px 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 12px;
-  height: 100%;
   box-sizing: border-box;
   width: 100%;
+  height: 100%;
+
+  ${({ $hasDescription }) =>
+    !$hasDescription &&
+    css`
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    `}
 
   ${({ theme: { media } }) => css`
     ${media.tablet} {
-      padding: 12px 12px 0px;
+      padding: 12px;
       flex: 1;
     }
   `}
