@@ -1,11 +1,16 @@
 'use client';
 
 import { FC } from 'react';
+import { MdClose } from 'react-icons/md';
 import { useBasket } from 'lib/context/basket';
+import { useRouter } from 'next/navigation';
 import { PrimaryButton } from 'theme/components/Button';
 import { FlexBox } from 'theme/components/FlexBox';
 import { Headline, Paragraph } from 'theme/components/Typography';
 
+import { useActiveRestaurant } from 'modules/restaurant/hooks';
+
+import { BasketItem } from './BasketItem';
 import * as Styled from './styled';
 
 type Props = {
@@ -14,12 +19,17 @@ type Props = {
 };
 
 export const Basket: FC<Props> = ({ isOpen, onClose }) => {
-  const { count, items } = useBasket();
+  const { count, items, finalPrice } = useBasket();
+  const router = useRouter();
+  const { activeRestaurant } = useActiveRestaurant();
 
   return (
     <>
       {isOpen && <Styled.BasketOverlay onClick={onClose} />}
       <Styled.BasketContainer $isOpen={isOpen}>
+        <Styled.CloseButton aria-label="Закрыть корзину" onClick={onClose}>
+          <MdClose size={22} />
+        </Styled.CloseButton>
         {count === 0 ? (
           <Styled.BasketEmpty>
             <Headline level={5} marginBottom="4px" textAlign="center">
@@ -36,42 +46,48 @@ export const Basket: FC<Props> = ({ isOpen, onClose }) => {
               Корзина
             </Headline>
             {items.map((item) => (
-              <Styled.BasketItem key={item.productId}>
-                <Paragraph color="#1D2939" fontWeight={600} level={3}>
-                  <FlexBox justify="space-between">
-                    <span>{item.item.name}</span>
-                  </FlexBox>
-                </Paragraph>
-              </Styled.BasketItem>
+              <BasketItem
+                item={item}
+                key={
+                  item.productId +
+                  item.productSizeId +
+                  JSON.stringify(item.modifiers)
+                }
+              />
             ))}
-            <Paragraph color="#1D2939" fontWeight={600} level={3}>
-              <FlexBox justify="space-between">
-                <span>Итого</span>
-                <span>0 руб</span>
-              </FlexBox>
-            </Paragraph>
-            <Paragraph
-              color="#1D2939"
-              fontWeight={600}
-              level={3}
-              marginBottom="8px"
-            >
-              <FlexBox justify="space-between">
-                <span>Доставка</span>
-                <span>0 руб</span>
-              </FlexBox>
-            </Paragraph>
-            <Paragraph color="#1D2939" fontWeight={600} marginBottom="8px">
-              <FlexBox justify="space-between">
-                <span>Всего к оплате</span>
-                <span>0 руб</span>
-              </FlexBox>
-            </Paragraph>
-            <PrimaryButton
-              fullWidth
-              label="Перейти к оплате"
-              onClick={onClose}
-            />
+            <Styled.BottomBasket>
+              <Paragraph color="#1D2939" fontWeight={600} level={3}>
+                <FlexBox justify="space-between">
+                  <span>Сумма заказа</span>
+                  <span>{finalPrice.toFixed(2)} руб</span>
+                </FlexBox>
+              </Paragraph>
+              <Paragraph
+                color="#1D2939"
+                fontWeight={600}
+                level={3}
+                marginBottom="8px"
+              >
+                <FlexBox justify="space-between">
+                  <span>Доставка</span>
+                  <span>Бесплатно</span>
+                </FlexBox>
+              </Paragraph>
+              <Paragraph color="#1D2939" fontWeight={600} marginBottom="8px">
+                <FlexBox justify="space-between">
+                  <span>Всего к оплате</span>
+                  <span>{finalPrice.toFixed(2)} руб</span>
+                </FlexBox>
+              </Paragraph>
+              <PrimaryButton
+                fullWidth
+                label="Перейти к оплате"
+                onClick={() => {
+                  router.push(`/${activeRestaurant?.slug}/checkout`);
+                  onClose();
+                }}
+              />
+            </Styled.BottomBasket>
           </div>
         )}
       </Styled.BasketContainer>

@@ -16,6 +16,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  height: 100%;
 
   ${({ theme: { media } }) => css`
     ${media.tablet} {
@@ -97,6 +98,7 @@ export const Info = styled.div<{ $hasDescription: boolean }>`
       flex-direction: column;
       justify-content: space-between;
       gap: 12px;
+      padding-bottom: 16px;
     `}
 
   ${({ theme: { media } }) => css`

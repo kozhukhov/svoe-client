@@ -89,23 +89,36 @@ export const Navigation: FC<Props> = ({ onOpenBasket }) => {
         {menu}
       </Styled.StickyNavigation>
       <Styled.MobileMenu>
-        {MOBILE_MENU.map(({ title, Icon, url }) => (
-          <Styled.MobileMenuItem
-            {...(url
-              ? {
-                href: `/${activeRestaurant?.slug}/${url}`,
-                $active: pathname.includes(url) && url !== '/',
-                onClick: onCloseMenu,
-              }
-              : { onClick: toggleMenu })}
-            key={title}
-          >
-            <Icon size={20} />
-            <Paragraph color="inherit" fontWeight={600} level={2}>
-              {title}
-            </Paragraph>
-          </Styled.MobileMenuItem>
-        ))}
+        <Styled.MobileMenuDock>
+          {MOBILE_MENU.map(({ action, title, Icon, url }) => (
+            <Styled.MobileMenuItem
+              {...(action === 'basket'
+                ? {
+                  $highlighted: count > 0,
+                  onClick: onOpenBasket,
+                }
+                : url
+                  ? {
+                    href: `/${activeRestaurant?.slug}/${url}`,
+                    onClick: onCloseMenu,
+                  }
+                  : { onClick: toggleMenu })}
+              key={title}
+            >
+              <Styled.MobileMenuIconWrapper
+                $highlighted={count > 0 && action === 'basket'}
+              >
+                <Icon size={19} />
+                {action === 'basket' && count > 0 && (
+                  <Styled.MobileMenuBadge>{count}</Styled.MobileMenuBadge>
+                )}
+              </Styled.MobileMenuIconWrapper>
+              <Paragraph color="inherit" fontWeight={600} level={3}>
+                {title}
+              </Paragraph>
+            </Styled.MobileMenuItem>
+          ))}
+        </Styled.MobileMenuDock>
       </Styled.MobileMenu>
     </>
   );

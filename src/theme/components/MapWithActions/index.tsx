@@ -7,7 +7,6 @@ type Props = {
 };
 
 export const MapWithActions: FC<Props> = ({ mapLink }) => {
-  console.log('mapLink', mapLink);
   return (
     <Styled.Wrapper>
       <Styled.Frame

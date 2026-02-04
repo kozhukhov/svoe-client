@@ -32,7 +32,7 @@ export const MOBILE_MENU = [
   },
   {
     title: 'Корзина',
-    url: '/korzina',
+    action: 'basket',
     Icon: MdOutlineShoppingBasket,
   },
   {

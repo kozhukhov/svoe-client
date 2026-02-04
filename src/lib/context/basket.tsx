@@ -4,7 +4,7 @@ import React, { createContext, useCallback, useContext, useState } from 'react';
 
 import { MenuItemDTO } from 'modules/menu/dto';
 
-type BasketItem = {
+export type BasketItem = {
   productId: string;
   productSizeId: string;
   modifiers: {
@@ -54,7 +54,6 @@ export const useItemBasket = (props: {
 } => {
   const context = useContext(BasketContext);
 
-  console.log('BASKET', context.items);
   const finalPrice =
     props.price +
     props.modifiers.reduce((acc, modifier) => acc + modifier.price, 0);
@@ -141,25 +140,24 @@ export const useBasket = (): {
   };
 };
 
+const isTheSameItem = (item1: BasketItem, item2: BasketItem) => {
+  return (
+    item1.productId === item2.productId &&
+    item1.productSizeId === item2.productSizeId &&
+    JSON.stringify(item1.modifiers) === JSON.stringify(item2.modifiers)
+  );
+};
+
 export const BasketProvider = ({ children }: { children: React.ReactNode }) => {
   const [items, setBasket] = useState<BasketItem[]>([]);
 
   const addItem = (item: BasketItem) => {
-    const itemToAdd = items.find(
-      (i) =>
-        i.productId === item.productId &&
-        i.productSizeId === item.productSizeId &&
-        JSON.stringify(i.modifiers) === JSON.stringify(item.modifiers),
-    );
+    const itemToAdd = items.find((i) => isTheSameItem(i, item));
 
     if (itemToAdd) {
       setBasket((items) =>
         items.map((i) =>
-          i.productId === item.productId &&
-            i.productSizeId === item.productSizeId &&
-            JSON.stringify(i.modifiers) === JSON.stringify(item.modifiers)
-            ? { ...i, count: i.count + 1 }
-            : i,
+          isTheSameItem(i, item) ? { ...i, count: i.count + 1 } : i,
         ),
       );
     } else {
@@ -168,25 +166,16 @@ export const BasketProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const removeItem = (item: BasketItem) => {
-    const itemToRemove = items.find(
-      (i) =>
-        i.productId === item.productId &&
-        i.productSizeId === item.productSizeId &&
-        JSON.stringify(i.modifiers) === JSON.stringify(item.modifiers),
-    );
+    const itemToRemove = items.find((i) => isTheSameItem(i, item));
 
     if (itemToRemove && itemToRemove.count > 1) {
       setBasket((items) =>
         items.map((i) =>
-          i.productId === item.productId &&
-            i.productSizeId === item.productSizeId &&
-            JSON.stringify(i.modifiers) === JSON.stringify(item.modifiers)
-            ? { ...i, count: i.count - 1 }
-            : i,
+          isTheSameItem(i, item) ? { ...i, count: i.count - 1 } : i,
         ),
       );
     } else {
-      setBasket(items.filter((i) => i.productId !== item.productId));
+      setBasket(items.filter((i) => !isTheSameItem(i, item)));
     }
   };
 

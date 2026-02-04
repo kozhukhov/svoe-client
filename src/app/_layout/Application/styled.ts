@@ -23,5 +23,5 @@ export const Dialog = styled.div`
 `;
 
 export const Application = styled.div`
-  overflow: hidden;
+  overflow-x: hidden;
 `;

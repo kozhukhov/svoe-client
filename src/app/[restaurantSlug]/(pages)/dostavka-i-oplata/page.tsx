@@ -15,7 +15,6 @@ import * as Styled from './styled';
 export default function DostavkaIPlatataPage() {
   const { activeRestaurant } = useActiveRestaurant();
 
-  console.log(activeRestaurant);
   return (
     <Section>
       <SectionInfo
