@@ -129,35 +129,40 @@ export default function CheckoutPage() {
         }
         : { paymentType: 'Card' as const };
 
-    const itemsData = items.map((item) => ({
-      productId: item.productId,
-      price: item.price,
-      amount: item.count,
-      productSizeId: item.productSizeId,
-      fullName:
-        item.item.name +
-        ' ' +
-        (item.item.itemSizes.find((s) => s.id === item.productSizeId)?.name ??
-          '') +
-        ' ' +
-        item.modifiers
-          .map((modifier) =>
-            item.item.itemSizes
-              .find((s) => s.id === item.productSizeId)
-              ?.itemModifierGroups.find(
-                (group) => group.id === modifier.groupId,
-              )
-              ?.items.find((item) => item.id === modifier.modifierId)
-              ?.name.toLowerCase(),
-          )
-          .join(', '),
-      modifiers: item.modifiers.map((modifier) => ({
-        amount: 1,
-        price: modifier.price,
-        productGroupId: modifier.groupId,
-        productId: modifier.modifierId,
-      })),
-    }));
+    const itemsData = items.map((item) => {
+      const activeModifiers = item.modifiers.filter(
+        (modifier) => modifier.modifierId !== 'without-modifier',
+      );
+      const activeSize = item.item.itemSizes.find(
+        (s) => s.id === item.productSizeId,
+      );
+
+      return {
+        productId: item.productId,
+        price: item.price,
+        amount: item.count,
+        productSizeId: item.productSizeId,
+        fullName:
+          item.item.name +
+          ' ' +
+          (activeSize?.name ?? '') +
+          ' ' +
+          activeModifiers
+            .map((modifier) =>
+              activeSize?.itemModifierGroups
+                .find((group) => group.id === modifier.groupId)
+                ?.items.find((item) => item.id === modifier.modifierId)
+                ?.name.toLowerCase(),
+            )
+            .join(', '),
+        modifiers: activeModifiers.map((modifier) => ({
+          amount: 1,
+          price: modifier.price,
+          productGroupId: modifier.groupId,
+          productId: modifier.modifierId,
+        })),
+      };
+    });
 
     await createOrderUseCase({
       ...base,
