@@ -56,7 +56,7 @@ export class APIServiceClass {
     }
 
     if (result.status === 401) {
-      window.location.replace('/login');
+      window.location.replace('/');
       this.isRedirectedToLogin = true;
     }
 

@@ -13,7 +13,6 @@ type BaseOrderDTO = {
     productSizeId?: string;
     modifiers?: Array<{
       amount: number;
-      price: number;
       productGroupId: string;
       productId: string;
     }>;

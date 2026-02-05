@@ -15,4 +15,6 @@ export type RestaurantDTO = {
   deliveryZoneMapUrl?: string | null;
   googleMapUrl?: string | null;
   yandexMapUrl?: string | null;
+  inactiveReason?: string | null;
+  reopenAt?: string | null;
 };

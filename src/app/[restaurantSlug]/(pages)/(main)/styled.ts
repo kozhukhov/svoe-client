@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { Skeleton } from 'theme/components/Skeleton';
 
 export const StickyCategories = styled.div`
   position: relative;
@@ -42,6 +43,12 @@ export const Categories = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+
+export const CategoryCardSekeleton = styled(Skeleton)`
+  width: 100px;
+  min-width: 100px;
+  height: 39px;
 `;
 
 export const CategoryCard = styled.button<{ $active: boolean }>`

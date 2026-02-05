@@ -4,6 +4,7 @@ type SkeletonProps = {
   $width: string;
   $height: string;
   $marginBottom: string;
+  $marginTop: string;
 };
 
 const backgroundAnimation = keyframes`
@@ -27,9 +28,10 @@ export const Skeleton = styled.div<SkeletonProps>`
   animation: ${backgroundAnimation} 1400ms ease infinite;
   border-radius: 16px;
 
-  ${({ $width, $height, $marginBottom }) => css`
+  ${({ $width, $height, $marginBottom, $marginTop }) => css`
     width: ${$width};
     height: ${$height};
     margin-bottom: ${$marginBottom};
+    margin-top: ${$marginTop};
   `}
 `;

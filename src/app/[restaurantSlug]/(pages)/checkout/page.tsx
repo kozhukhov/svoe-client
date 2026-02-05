@@ -157,7 +157,6 @@ export default function CheckoutPage() {
             .join(', '),
         modifiers: activeModifiers.map((modifier) => ({
           amount: 1,
-          price: modifier.price,
           productGroupId: modifier.groupId,
           productId: modifier.modifierId,
         })),
