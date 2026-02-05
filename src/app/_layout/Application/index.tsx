@@ -163,10 +163,7 @@ export const Application = ({ children }: { children: React.ReactNode }) => {
     const phoneHref = activeRestaurant.phone
       ? `tel:${activeRestaurant.phone.replace(/ |-|\(|\)/g, '')}`
       : undefined;
-    const mapHref =
-      activeRestaurant.yandexMapUrl ||
-      activeRestaurant.googleMapUrl ||
-      activeRestaurant.mapUrl;
+
     const socials = getSocials(activeRestaurant);
 
     return (
