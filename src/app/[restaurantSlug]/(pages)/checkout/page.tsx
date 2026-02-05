@@ -14,6 +14,7 @@ import { Headline, Paragraph } from 'theme/components/Typography';
 
 import { MenuItemDTO } from 'modules/menu/dto';
 import { getMenu } from 'modules/menu/service';
+import { createOrderUseCase } from 'modules/order/usecase';
 import { useActiveRestaurant } from 'modules/restaurant/hooks';
 
 import * as Styled from './styled';
@@ -55,6 +56,7 @@ export default function CheckoutPage() {
     houseRegistration,
     flatRegistration,
     commentRegistration,
+    watch,
   } = useForm();
 
   const menuKey = activeRestaurant?.id
@@ -89,14 +91,88 @@ export default function CheckoutPage() {
   );
 
   const onSubmit = async () => {
-    // UI-only for now (no backend use-case yet)
+    if (!activeRestaurant) return;
+
     setIsSubmitting(true);
 
-    await new Promise((r) => setTimeout(r, 650));
+    const values = watch();
+    const changeFrom = values.changeFrom
+      ? Number(values.changeFrom.replace(',', '.').trim())
+      : undefined;
 
-    clearBasket();
-    setIsSubmitting(false);
-    router.replace(`/${activeRestaurant?.slug}`);
+    const base = {
+      restaurantId: activeRestaurant.id,
+      name: values.name,
+      phone: values.phone,
+      comment: values.comment || undefined,
+      deliveryCost,
+      finalPrice,
+    };
+
+    const service =
+      fulfillment === 'delivery'
+        ? {
+          orderServiceType: 'DeliveryByCourier' as const,
+          street: values.street,
+          houseNumber: values.house,
+          entrance: values.entrance || undefined,
+          floor: values.floor || undefined,
+          flatNumber: values.flat || undefined,
+        }
+        : { orderServiceType: 'DeliveryByClient' as const };
+
+    const paymentData =
+      payment === 'cash'
+        ? {
+          paymentType: 'Cash' as const,
+          changeFrom: Number.isFinite(changeFrom) ? changeFrom : undefined,
+        }
+        : { paymentType: 'Card' as const };
+
+    const itemsData = items.map((item) => ({
+      productId: item.productId,
+      price: item.price,
+      amount: item.count,
+      productSizeId: item.productSizeId,
+      fullName:
+        item.item.name +
+        ' ' +
+        (item.item.itemSizes.find((s) => s.id === item.productSizeId)?.name ??
+          '') +
+        ' ' +
+        item.modifiers
+          .map((modifier) =>
+            item.item.itemSizes
+              .find((s) => s.id === item.productSizeId)
+              ?.itemModifierGroups.find(
+                (group) => group.id === modifier.groupId,
+              )
+              ?.items.find((item) => item.id === modifier.modifierId)
+              ?.name.toLowerCase(),
+          )
+          .join(', '),
+      modifiers: item.modifiers.map((modifier) => ({
+        amount: 1,
+        price: modifier.price,
+        productGroupId: modifier.groupId,
+        productId: modifier.modifierId,
+      })),
+    }));
+
+    await createOrderUseCase({
+      ...base,
+      items: itemsData,
+      ...service,
+      ...paymentData,
+      onSuccess: () => {
+        clearBasket();
+        setIsSubmitting(false);
+        router.replace(`/${activeRestaurant.slug}`);
+      },
+      onError: () => {
+        setIsSubmitting(false);
+      },
+    });
   };
 
   return (
