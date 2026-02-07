@@ -2,6 +2,15 @@ import styled, { css, keyframes } from 'styled-components';
 import { FlexBox } from 'theme/components/FlexBox';
 import { Headline, Paragraph } from 'theme/components/Typography';
 
+const imageShimmer = keyframes`
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+`;
+
 const lightboxFadeIn = keyframes`
   from {
     opacity: 0;
@@ -45,10 +54,25 @@ export const Wrapper = styled.div`
   `}
 `;
 
-export const ImageButton = styled.button`
+export const ImageButton = styled.button<{ $loading: boolean }>`
   appearance: none;
   border: 0;
-  background: transparent;
+  background: ${({ $loading }) =>
+    $loading
+      ? `linear-gradient(
+          90deg,
+          rgba(243, 244, 246, 1) 0%,
+          rgba(229, 231, 235, 1) 50%,
+          rgba(243, 244, 246, 1) 100%
+        )`
+      : 'transparent'};
+  background-size: 200% 100%;
+  animation: ${({ $loading }) =>
+    $loading
+      ? css`
+          ${imageShimmer} 1.2s ease-in-out infinite
+        `
+      : 'none'};
   padding: 0;
   margin: 0;
   display: block;
@@ -69,13 +93,21 @@ export const ImageButton = styled.button`
   }
 `;
 
-export const Image = styled.img`
+export const Image = styled.img<{ $loaded: boolean }>`
   display: block;
   width: 100%;
   aspect-ratio: 1 / 1;
   height: auto;
   object-fit: cover;
   border-radius: 16px;
+
+  opacity: ${({ $loaded }) => ($loaded ? 1 : 0)};
+  filter: ${({ $loaded }) => ($loaded ? 'blur(0px)' : 'blur(10px)')};
+  transform: ${({ $loaded }) => ($loaded ? 'scale(1)' : 'scale(1.02)')};
+  transition:
+    opacity 260ms ease,
+    filter 260ms ease,
+    transform 260ms ease;
 `;
 
 export const Name = styled(Headline).attrs({

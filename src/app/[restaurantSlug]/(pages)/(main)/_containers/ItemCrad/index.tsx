@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { useItemBasket } from 'lib/context/basket';
 import { PrimaryButton } from 'theme/components/Button';
 import { Switcher } from 'theme/components/Switcher';
@@ -15,6 +15,9 @@ type Props = {
 
 export const ItemCard: FC<Props> = ({ item }) => {
   const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
+  const [isImageInView, setIsImageInView] = useState(false);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const imageButtonRef = useRef<HTMLButtonElement | null>(null);
   const [activeSize, setActiveSize] = useState<MenuItemSizeDTO>(
     item.itemSizes.find((size) => size.isDefault) ?? item.itemSizes[0],
   );
@@ -36,6 +39,33 @@ export const ItemCard: FC<Props> = ({ item }) => {
   useEffect(() => {
     if (isImagePreviewOpen && !activeSize.image) setIsImagePreviewOpen(false);
   }, [isImagePreviewOpen, activeSize.image]);
+
+  useEffect(() => {
+    setIsImageLoaded(false);
+  }, [activeSize.image]);
+
+  useEffect(() => {
+    const el = imageButtonRef.current;
+    if (!el) return;
+    if (isImageInView) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setIsImageInView(true);
+          observer.disconnect();
+        }
+      },
+      {
+        root: null,
+        rootMargin: '200px 0px',
+        threshold: 0.01,
+      },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [isImageInView]);
 
   useEffect(() => {
     if (!isImagePreviewOpen) return;
@@ -190,11 +220,25 @@ export const ItemCard: FC<Props> = ({ item }) => {
       <Styled.Card>
         <Styled.Wrapper>
           <Styled.ImageButton
+            $loading={!isImageLoaded && Boolean(activeSize.image)}
             aria-label="Увеличить изображение"
+            ref={imageButtonRef}
             type="button"
-            onClick={() => activeSize.image && setIsImagePreviewOpen(true)}
+            onClick={() => {
+              setIsImageInView(true);
+              if (!activeSize.image) return;
+              setIsImagePreviewOpen(true);
+            }}
           >
-            <Styled.Image alt={item.name} src={activeSize.image} />
+            <Styled.Image
+              $loaded={isImageLoaded}
+              alt={item.name}
+              decoding="async"
+              loading="lazy"
+              src={isImageInView ? activeSize.image : undefined}
+              onError={() => setIsImageLoaded(true)}
+              onLoad={() => setIsImageLoaded(true)}
+            />
           </Styled.ImageButton>
           <Styled.Info $hasDescription={!!item.description}>
             <Styled.Name>{item.name}</Styled.Name>
