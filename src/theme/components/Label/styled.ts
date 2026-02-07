@@ -16,7 +16,7 @@ export const Label = styled.div<{ $variant: Variant; $marginBottom: string }>`
 
     ${$variant === Variant.PRIMARY &&
     css`
-      background: rgb(249, 198, 70);
+      background: #3f8f4a;
       color: #fff;
     `}
   `}

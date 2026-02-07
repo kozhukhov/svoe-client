@@ -10,8 +10,19 @@ export const BasketContainer = styled.div<{ $isOpen: boolean }>`
   border-left: 1px solid rgba(0, 0, 0, 0.1);
   height: 100vh;
   width: 40vw;
+  min-width: 400px;
   padding: 20px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  ${({ theme: { media } }) => css`
+    ${media.tablet} {
+      width: 100vw;
+      min-width: unset;
+    }
+  `}
 
   ${({ $isOpen }) => css`
     transform: translateX(${$isOpen ? '0' : '100%'});
@@ -19,21 +30,25 @@ export const BasketContainer = styled.div<{ $isOpen: boolean }>`
   `}
 `;
 
+export const BasketHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+`;
+
 export const CloseButton = styled.button`
   appearance: none;
   border: 1px solid rgba(0, 0, 0, 0.08);
   background: rgba(255, 255, 255, 0.9);
   cursor: pointer;
-  position: absolute;
-  top: 14px;
-  right: 14px;
   width: 40px;
   height: 40px;
   border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 22px rgba(16, 24, 40, 0.10);
 
   &:hover {
     background: rgba(255, 255, 255, 1);
@@ -64,7 +79,14 @@ export const BasketEmpty = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  flex: 1;
+`;
+
+export const BasketItems = styled.div`
+  flex: 1;
+  overflow: auto;
+  padding-right: 8px;
+  overscroll-behavior: contain;
 `;
 
 export const BasketItem = styled.div<{ $compact?: boolean }>`
@@ -98,6 +120,8 @@ export const BasketImage = styled.img`
 
 export const BottomBasket = styled.div`
   padding-top: 16px;
+  margin-top: auto;
+  border-top: 1px solid #e4e7ec;
 `;
 
 export const BasketItemDescription = styled(Paragraph).attrs({

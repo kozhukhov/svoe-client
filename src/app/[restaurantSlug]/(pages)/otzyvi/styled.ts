@@ -27,7 +27,7 @@ export const RatingBadge = styled.div`
   align-items: center;
   gap: 6px;
   padding: 6px 8px;
-  background: rgb(249, 198, 70);
+  background: #3f8f4a;
   color: #fff;
   border-radius: 10px;
   font-weight: 700;
@@ -38,7 +38,7 @@ export const Count = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(249, 198, 70);
+  background-color: #3f8f4a;
   color: #fff;
   padding: 4px 8px;
   border-radius: 10px;

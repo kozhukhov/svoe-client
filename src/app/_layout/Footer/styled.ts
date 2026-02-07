@@ -117,7 +117,7 @@ export const Contacts = styled.div`
 
 export const Link = styled(Paragraph)`
   &:hover {
-    color: rgb(249, 198, 70);
+    color: #3f8f4a;
   }
 `;
 

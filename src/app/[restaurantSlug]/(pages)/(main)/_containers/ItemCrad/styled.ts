@@ -1,6 +1,26 @@
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { FlexBox } from 'theme/components/FlexBox';
 import { Headline, Paragraph } from 'theme/components/Typography';
+
+const lightboxFadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const lightboxZoomIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
 
 export const Card = styled.div`
   border-radius: 16px;
@@ -25,6 +45,30 @@ export const Wrapper = styled.div`
   `}
 `;
 
+export const ImageButton = styled.button`
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  display: block;
+  width: 100%;
+  cursor: zoom-in;
+  border-radius: 16px;
+
+  ${({ theme: { media } }) => css`
+    ${media.tablet} {
+      width: 50%;
+      flex: 0 0 auto;
+    }
+  `}
+
+  &:focus-visible {
+    outline: 2px solid rgba(63, 143, 74, 0.45);
+    outline-offset: 2px;
+  }
+`;
+
 export const Image = styled.img`
   display: block;
   width: 100%;
@@ -32,12 +76,6 @@ export const Image = styled.img`
   height: auto;
   object-fit: cover;
   border-radius: 16px;
-
-  ${({ theme: { media } }) => css`
-    ${media.tablet} {
-      width: 50%;
-    }
-  `}
 `;
 
 export const Name = styled(Headline).attrs({
@@ -160,4 +198,57 @@ export const Measure = styled(Paragraph).attrs({
       font-size: 12px;
     }
   `}
+`;
+
+export const LightboxOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: ${lightboxFadeIn} 160ms ease;
+`;
+
+export const LightboxContent = styled.div`
+  position: relative;
+  width: min(92vw, 980px);
+  max-height: 92vh;
+  animation: ${lightboxZoomIn} 180ms ease;
+`;
+
+export const LightboxClose = styled.button`
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.92);
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 44px;
+  height: 44px;
+  font-size: 32px;
+  line-height: 44px;
+
+  &:hover {
+    color: rgba(255, 255, 255, 1);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(63, 143, 74, 0.45);
+    outline-offset: 2px;
+  }
+`;
+
+export const LightboxImage = styled.img`
+  display: block;
+  width: 100%;
+  max-height: 92vh;
+  height: auto;
+  object-fit: contain;
+  border-radius: 16px;
+  background: #fff;
 `;

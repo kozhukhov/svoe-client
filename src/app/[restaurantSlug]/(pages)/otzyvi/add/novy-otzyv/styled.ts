@@ -39,7 +39,7 @@ export const StarButton = styled.button`
   line-height: 1;
 
   &:focus-visible {
-    outline: 2px solid #f9c646;
+    outline: 2px solid #3f8f4a;
     outline-offset: 2px;
   }
 

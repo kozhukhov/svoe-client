@@ -27,9 +27,12 @@ export const Basket: FC<Props> = ({ isOpen, onClose }) => {
     <>
       {isOpen && <Styled.BasketOverlay onClick={onClose} />}
       <Styled.BasketContainer $isOpen={isOpen}>
-        <Styled.CloseButton aria-label="Закрыть корзину" onClick={onClose}>
-          <MdClose size={22} />
-        </Styled.CloseButton>
+        <Styled.BasketHeader>
+          <Headline level={5}>Корзина</Headline>
+          <Styled.CloseButton aria-label="Закрыть корзину" onClick={onClose}>
+            <MdClose size={22} />
+          </Styled.CloseButton>
+        </Styled.BasketHeader>
         {count === 0 ? (
           <Styled.BasketEmpty>
             <Headline level={5} marginBottom="4px" textAlign="center">
@@ -41,20 +44,19 @@ export const Basket: FC<Props> = ({ isOpen, onClose }) => {
             <PrimaryButton label="Меню" onClick={onClose} />
           </Styled.BasketEmpty>
         ) : (
-          <div>
-            <Headline level={5} marginBottom="16px">
-              Корзина
-            </Headline>
-            {items.map((item) => (
-              <BasketItem
-                item={item}
-                key={
-                  item.productId +
-                  item.productSizeId +
-                  JSON.stringify(item.modifiers)
-                }
-              />
-            ))}
+          <>
+            <Styled.BasketItems>
+              {items.map((item) => (
+                <BasketItem
+                  item={item}
+                  key={
+                    item.productId +
+                    item.productSizeId +
+                    JSON.stringify(item.modifiers)
+                  }
+                />
+              ))}
+            </Styled.BasketItems>
             <Styled.BottomBasket>
               <Paragraph color="#1D2939" fontWeight={600} level={3}>
                 <FlexBox justify="space-between">
@@ -88,7 +90,7 @@ export const Basket: FC<Props> = ({ isOpen, onClose }) => {
                 }}
               />
             </Styled.BottomBasket>
-          </div>
+          </>
         )}
       </Styled.BasketContainer>
     </>

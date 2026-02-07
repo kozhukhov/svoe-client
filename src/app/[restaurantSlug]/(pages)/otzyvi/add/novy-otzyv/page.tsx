@@ -103,7 +103,7 @@ export default function NovyOtzyvPage() {
                         onMouseLeave={() => setHoveredRating(null)}
                       >
                         <FaStar
-                          color={isActive ? '#f9c646' : '#e5e7eb'}
+                          color={isActive ? '#3f8f4a' : '#e5e7eb'}
                           size={28}
                         />
                       </Styled.StarButton>

@@ -14,6 +14,7 @@ type Props = {
 };
 
 export const ItemCard: FC<Props> = ({ item }) => {
+  const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
   const [activeSize, setActiveSize] = useState<MenuItemSizeDTO>(
     item.itemSizes.find((size) => size.isDefault) ?? item.itemSizes[0],
   );
@@ -31,6 +32,31 @@ export const ItemCard: FC<Props> = ({ item }) => {
       price: group.items.length === 1 ? 0 : group.items[0].price,
     })),
   );
+
+  useEffect(() => {
+    if (isImagePreviewOpen && !activeSize.image) setIsImagePreviewOpen(false);
+  }, [isImagePreviewOpen, activeSize.image]);
+
+  useEffect(() => {
+    if (!isImagePreviewOpen) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsImagePreviewOpen(false);
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isImagePreviewOpen]);
+
+  useEffect(() => {
+    if (!isImagePreviewOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isImagePreviewOpen]);
 
   useEffect(() => {
     setActiveModifiers(
@@ -160,17 +186,40 @@ export const ItemCard: FC<Props> = ({ item }) => {
   );
 
   return (
-    <Styled.Card>
-      <Styled.Wrapper>
-        <Styled.Image src={activeSize.image} />
-        <Styled.Info $hasDescription={!!item.description}>
-          <Styled.Name>{item.name}</Styled.Name>
-          <Styled.Description>
-            {item.description} {!item.description && bottom}
-          </Styled.Description>
-        </Styled.Info>
-      </Styled.Wrapper>
-      {item.description && <Styled.Bottom>{bottom}</Styled.Bottom>}
-    </Styled.Card>
+    <>
+      <Styled.Card>
+        <Styled.Wrapper>
+          <Styled.ImageButton
+            aria-label="Увеличить изображение"
+            type="button"
+            onClick={() => activeSize.image && setIsImagePreviewOpen(true)}
+          >
+            <Styled.Image alt={item.name} src={activeSize.image} />
+          </Styled.ImageButton>
+          <Styled.Info $hasDescription={!!item.description}>
+            <Styled.Name>{item.name}</Styled.Name>
+            <Styled.Description>
+              {item.description} {!item.description && bottom}
+            </Styled.Description>
+          </Styled.Info>
+        </Styled.Wrapper>
+        {item.description && <Styled.Bottom>{bottom}</Styled.Bottom>}
+      </Styled.Card>
+
+      {isImagePreviewOpen && (
+        <Styled.LightboxOverlay onClick={() => setIsImagePreviewOpen(false)}>
+          <Styled.LightboxContent onClick={(e) => e.stopPropagation()}>
+            <Styled.LightboxClose
+              aria-label="Закрыть"
+              type="button"
+              onClick={() => setIsImagePreviewOpen(false)}
+            >
+              ×
+            </Styled.LightboxClose>
+            <Styled.LightboxImage alt={item.name} src={activeSize.image} />
+          </Styled.LightboxContent>
+        </Styled.LightboxOverlay>
+      )}
+    </>
   );
 };

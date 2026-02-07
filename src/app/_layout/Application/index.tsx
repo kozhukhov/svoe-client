@@ -146,7 +146,7 @@ export const Application = ({ children }: { children: React.ReactNode }) => {
             {restaurants.map((restaurant) => (
               <SecondaryButton
                 fullWidth
-                icon={<IoLocationOutline color="#f9c646" size={20} />}
+                  icon={<IoLocationOutline color="#3f8f4a" size={20} />}
                 key={restaurant.slug}
                 label={restaurant.city}
                 onClick={() => setRestaurantLocation(restaurant.slug)}

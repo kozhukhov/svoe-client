@@ -13,7 +13,7 @@ const spin = keyframes`
 const BaseLoader = styled.div<{ $size: number }>`
   width: ${({ $size }) => $size}px;
   height: ${({ $size }) => $size}px;
-  border: 3px solid rgb(249, 198, 70);
+  border: 3px solid #3f8f4a;
   border-top: 3px solid transparent;
   border-width: ${({ $size }) => $size / 10}px;
   border-radius: 50%;

@@ -33,14 +33,14 @@ export const Icon = styled.div`
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  color: rgb(249, 198, 70);
+  color: #3f8f4a;
   border: 1px solid rgba(0, 0, 0, 0.1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
   flex-shrink: 0;
-  background: rgba(249, 198, 70, 0.08);
+  background: rgba(63, 143, 74, 0.08);
 `;
 
 export const CardValue = styled.div`
@@ -85,7 +85,7 @@ export const MapCaption = styled.div`
   justify-content: space-between;
   gap: 10px;
   padding: 12px 14px;
-  background: rgba(249, 198, 70, 0.08);
+  background: rgba(63, 143, 74, 0.08);
   color: #1d2939;
 
   ${({ theme: { media } }) => css`
@@ -102,6 +102,6 @@ export const MapLink = styled.a`
   text-decoration: none;
 
   &:hover {
-    color: rgb(249, 198, 70);
+    color: #3f8f4a;
   }
 `;

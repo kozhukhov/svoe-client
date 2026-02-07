@@ -29,7 +29,7 @@ export const Action = styled(Paragraph).attrs({
   level: 2,
   fontWeight: 700,
 })`
-  background: rgba(249, 198, 70, 0.08);
+  background: rgba(63, 143, 74, 0.08);
   padding: 12px 14px;
   text-align: center;
   width: 100%;
