@@ -142,7 +142,9 @@ export const useBasket = (): {
     items: context.items,
     addItem: () => { },
     removeItem: () => { },
-    clearBasket: () => { },
+    clearBasket: () => {
+      context.clearBasket();
+    },
   };
 };
 

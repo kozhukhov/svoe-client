@@ -8,6 +8,7 @@ type Props = {
   label?: string;
 
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  type?: 'button' | 'submit' | 'reset';
   marginBottom?: string;
   marginTop?: string;
   fullWidth?: boolean;
@@ -22,6 +23,7 @@ export const Button: FC<Props> = ({
   variant = Variant.PRIMARY,
   label,
   onClick,
+  type = 'button',
   disabled = false,
   marginBottom = '0px',
   marginTop = '0px',
@@ -57,6 +59,7 @@ export const Button: FC<Props> = ({
     <Styled.Button
       disabled={disabled || loading}
       onClick={handleClick}
+      type={type}
       {...props}
     >
       {icon}

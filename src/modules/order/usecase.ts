@@ -1,14 +1,14 @@
 import { snackbar } from 'app/_layout/Snackbars';
 
-import { CreateOrderDTO } from './dto';
+import { CreateOrderDTO, OrderDTO } from './dto';
 import { createOrder } from './service';
 
 export const createOrderUseCase = ({
-  // onSuccess,
-  // onError,
+  onSuccess,
+  onError,
   ...orderData
 }: CreateOrderDTO & {
-  onSuccess: () => void;
+  onSuccess: (info: OrderDTO) => void;
   onError: () => void;
 }) =>
   snackbar
@@ -23,10 +23,9 @@ export const createOrderUseCase = ({
       },
     )
     .then((info) => {
-      console.log('onSuccess', info);
-      // onSuccess();
+      onSuccess(info);
     })
     .catch((error) => {
-      // onError();
+      onError();
       console.error(error);
     });

@@ -45,4 +45,9 @@ export type CreateOrderDTO = BaseOrderDTO &
   (DeliveryByCourierrDTO | DeliveryByClientDTO) &
   (PaymentCashDTO | PaymentCardDTO);
 
-export type OrderDTO = {};
+export type OrderDTO = {
+  orderInfo: {
+    id: string;
+    creationStatus: 'InProgress' | 'Success' | 'Error';
+  };
+};

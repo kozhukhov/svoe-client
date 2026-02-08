@@ -168,10 +168,13 @@ export default function CheckoutPage() {
       items: itemsData,
       ...service,
       ...paymentData,
-      onSuccess: () => {
-        clearBasket();
-        setIsSubmitting(false);
-        router.replace(`/${activeRestaurant.slug}`);
+      onSuccess: (info) => {
+        router.replace(`/${activeRestaurant.slug}/order/${info.orderInfo.id}`);
+
+        setTimeout(() => {
+          clearBasket();
+          setIsSubmitting(false);
+        }, 1000);
       },
       onError: () => {
         setIsSubmitting(false);
@@ -344,6 +347,7 @@ export default function CheckoutPage() {
                 <SecondaryButton
                   label="Изменить"
                   size={Size.SMALL}
+                  type="button"
                   onClick={() => router.push(`/${activeRestaurant?.slug}`)}
                 />
               </FlexBox>
@@ -416,6 +420,7 @@ export default function CheckoutPage() {
                 label={isSubmitting ? 'Оформляем...' : 'Оформить'}
                 loading={isSubmitting}
                 size={Size.LARGE}
+                type="submit"
               />
             </Styled.SummaryBarInner>
           </Styled.SummaryBarCard>

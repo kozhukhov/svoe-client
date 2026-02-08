@@ -70,12 +70,18 @@ export const BasketItem: FC<Props> = ({ item, compact = false }) => {
                 <PrimaryButton
                   label="–"
                   size={Size.SMALL}
+                  type="button"
                   onClick={removeItem}
                 />
                 <Paragraph color="#3f8f4a" fontWeight={600} level={3}>
                   {count}
                 </Paragraph>
-                <PrimaryButton label="+" size={Size.SMALL} onClick={addItem} />
+                <PrimaryButton
+                  label="+"
+                  size={Size.SMALL}
+                  type="button"
+                  onClick={addItem}
+                />
               </Styled.ActionButton>
               <Paragraph
                 color="#1D2939"
@@ -106,11 +112,11 @@ export const BasketItem: FC<Props> = ({ item, compact = false }) => {
             </Styled.BasketItemDescription>
             <FlexBox align="center" justify="space-between" marginTop="12px">
               <Styled.ActionButton>
-                <PrimaryButton label="–" onClick={removeItem} />
+                <PrimaryButton label="–" type="button" onClick={removeItem} />
                 <Paragraph color="#3f8f4a" fontWeight={600} level={2}>
                   {count}
                 </Paragraph>
-                <PrimaryButton label="+" onClick={addItem} />
+                <PrimaryButton label="+" type="button" onClick={addItem} />
               </Styled.ActionButton>
               <Paragraph color="#1D2939" fontWeight={600} level={2}>
                 {(finalPrice * count).toFixed(2)} руб
