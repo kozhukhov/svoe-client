@@ -20,8 +20,10 @@ export const BasketItem: FC<Props> = ({ item, compact = false }) => {
     (size) => size.id === item.productSizeId,
   );
 
+  const isSushiCategory = /(суш|ролл)/i.test(item.categoryName ?? '');
+
   const measure = activeSize?.weight
-    ? `${activeSize?.weight} ${MAP_FROM_TYPE_TO_LABEL[activeSize?.measureUnitType]}`
+    ? `${Math.round(activeSize?.weight)} ${MAP_FROM_TYPE_TO_LABEL[activeSize?.measureUnitType]}${isSushiCategory ? ' | 8 шт' : ''}`
     : '1 шт';
 
   const { count, finalPrice, addItem, removeItem } = useItemBasket({

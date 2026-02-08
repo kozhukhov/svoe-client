@@ -7,6 +7,7 @@ import { MenuItemDTO } from 'modules/menu/dto';
 export type BasketItem = {
   productId: string;
   productSizeId: string;
+  categoryName?: string;
   modifiers: {
     groupId: string;
     modifierId: string;
@@ -37,6 +38,7 @@ export const BasketContext = createContext<BasketContextType>({
 export const useItemBasket = (props: {
   productId: string;
   productSizeId: string;
+  categoryName?: string;
   modifiers: {
     groupId: string;
     modifierId: string;
@@ -62,6 +64,7 @@ export const useItemBasket = (props: {
     context.addItem({
       productId: props.productId,
       productSizeId: props.productSizeId,
+      categoryName: props.categoryName,
       modifiers: props.modifiers,
       count: 1,
       item: props.item,
@@ -71,6 +74,7 @@ export const useItemBasket = (props: {
   }, [
     context,
     finalPrice,
+    props.categoryName,
     props.item,
     props.modifiers,
     props.price,
@@ -82,6 +86,7 @@ export const useItemBasket = (props: {
     context.removeItem({
       productId: props.productId,
       productSizeId: props.productSizeId,
+      categoryName: props.categoryName,
       modifiers: props.modifiers,
       count: 1,
       item: props.item,
@@ -91,6 +96,7 @@ export const useItemBasket = (props: {
   }, [
     context,
     finalPrice,
+    props.categoryName,
     props.item,
     props.modifiers,
     props.price,

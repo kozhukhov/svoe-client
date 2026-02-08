@@ -32,12 +32,29 @@ const lightboxZoomIn = keyframes`
 `;
 
 export const Card = styled.div`
+  position: relative;
   border-radius: 16px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   background-color: #fff;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+`;
+
+export const Badge = styled.div`
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 59, 48, 0.92);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  box-shadow: 0 6px 12px rgba(16, 24, 40, 0.12);
+  pointer-events: none;
 `;
 
 export const Wrapper = styled.div`
@@ -93,10 +110,10 @@ export const ImageButton = styled.button<{ $loading: boolean }>`
   }
 `;
 
-export const Image = styled.img<{ $loaded: boolean }>`
+export const Image = styled.img<{ $loaded: boolean; $aspectRatio?: string }>`
   display: block;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: ${({ $aspectRatio }) => $aspectRatio ?? '1 / 1'};
   height: auto;
   object-fit: cover;
   border-radius: 16px;
@@ -116,6 +133,8 @@ export const Name = styled(Headline).attrs({
   marginBottom: '4px',
 })`
   ${({ theme: { media } }) => css`
+    line-height: 20px;
+
     ${media.tablet} {
       font-size: 18px;
       margin-bottom: 8px;

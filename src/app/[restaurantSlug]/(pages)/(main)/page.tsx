@@ -250,7 +250,7 @@ export default function MainPage() {
               </Headline>
               <Styled.Items>
                 {category.items.map((item) => (
-                  <ItemCard item={item} key={item.id} />
+                  <ItemCard categoryName={category.name} item={item} key={item.id} />
                 ))}
               </Styled.Items>
             </Styled.CategorySection>

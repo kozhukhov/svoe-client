@@ -12,6 +12,7 @@ export const BasketContainer = styled.div<{ $isOpen: boolean }>`
   width: 40vw;
   min-width: 400px;
   padding: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -21,6 +22,7 @@ export const BasketContainer = styled.div<{ $isOpen: boolean }>`
     ${media.tablet} {
       width: 100vw;
       min-width: unset;
+      padding-bottom: calc(32px + env(safe-area-inset-bottom));
     }
   `}
 
@@ -42,6 +44,7 @@ export const CloseButton = styled.button`
   appearance: none;
   border: 1px solid rgba(0, 0, 0, 0.08);
   background: rgba(255, 255, 255, 0.9);
+  color: #1d2939;
   cursor: pointer;
   width: 40px;
   height: 40px;

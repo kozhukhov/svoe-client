@@ -4,16 +4,17 @@ import { PrimaryButton } from 'theme/components/Button';
 import { Switcher } from 'theme/components/Switcher';
 import { Paragraph } from 'theme/components/Typography';
 
-import { MenuItemDTO, MenuItemSizeDTO } from 'modules/menu/dto';
+import { MenuItemDTO, MenuItemLabel, MenuItemSizeDTO } from 'modules/menu/dto';
 
 import { MAP_FROM_TYPE_TO_LABEL } from './constants';
 import * as Styled from './styled';
 
 type Props = {
+  categoryName: string;
   item: MenuItemDTO;
 };
 
-export const ItemCard: FC<Props> = ({ item }) => {
+export const ItemCard: FC<Props> = ({ categoryName, item }) => {
   const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false);
   const [isImageInView, setIsImageInView] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -105,16 +106,37 @@ export const ItemCard: FC<Props> = ({ item }) => {
     modifiers: activeModifiers,
     item,
     price: activeSize.price,
+    categoryName,
   });
 
   const hasSizes = useMemo(() => item.itemSizes.length > 1, [item.itemSizes]);
 
+  const isNew = useMemo(
+    () => (item.labels ?? []).includes(MenuItemLabel.NEW),
+    [item.labels],
+  );
+
+  const isSushiCategory = useMemo(() => {
+    const text = (categoryName ?? '').toLowerCase();
+    return /(суш|ролл)/.test(text);
+  }, [categoryName]);
+
+  const imageAspectRatio = useMemo(
+    () => (isSushiCategory ? '1 / 0.7' : '1 / 1'),
+    [isSushiCategory],
+  );
+
+  const sushiPiecesSuffix = useMemo(
+    () => (isSushiCategory ? ' | 8 шт' : ''),
+    [isSushiCategory],
+  );
+
   const measure = useMemo(
     () =>
       activeSize.weight
-        ? `${activeSize.weight} ${MAP_FROM_TYPE_TO_LABEL[activeSize.measureUnitType]}`
+        ? `${Math.round(activeSize.weight)} ${MAP_FROM_TYPE_TO_LABEL[activeSize.measureUnitType]}${sushiPiecesSuffix}`
         : '1 шт',
-    [activeSize.weight, activeSize.measureUnitType],
+    [activeSize.weight, activeSize.measureUnitType, sushiPiecesSuffix],
   );
 
   const actionButton = useMemo(() => {
@@ -218,6 +240,7 @@ export const ItemCard: FC<Props> = ({ item }) => {
   return (
     <>
       <Styled.Card>
+        {isNew && <Styled.Badge>Новинка</Styled.Badge>}
         <Styled.Wrapper>
           <Styled.ImageButton
             $loading={!isImageLoaded && Boolean(activeSize.image)}
@@ -231,6 +254,7 @@ export const ItemCard: FC<Props> = ({ item }) => {
             }}
           >
             <Styled.Image
+              $aspectRatio={imageAspectRatio}
               $loaded={isImageLoaded}
               alt={item.name}
               decoding="async"

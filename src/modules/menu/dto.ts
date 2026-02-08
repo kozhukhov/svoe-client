@@ -4,6 +4,10 @@ export enum MeasureUnitType {
   LITER = 'LITER',
 }
 
+export enum MenuItemLabel {
+  NEW = 'new',
+}
+
 export type MenuItemModifierGroupDTO = {
   id: string;
   name: string;
@@ -38,6 +42,7 @@ export type MenuItemDTO = {
   name: string;
   sku: string;
   itemSizes: MenuItemSizeDTO[];
+  labels: MenuItemLabel[];
 };
 
 export type MenuDTO = {
