@@ -6,7 +6,9 @@ WORKDIR /app
 # Disable Turbopack
 ENV NEXT_PRIVATE_TURBOPACK=0
 ENV TURBOPACK=0
-ENV NODE_OPTIONS="--max-old-space-size=512"
+# Next build + TypeScript typecheck can easily exceed 512MB heap.
+# Keep it higher in builder to avoid OOM during `next build`.
+ENV NODE_OPTIONS="--max-old-space-size=1024"
 
 # Install system deps (openssl for prisma)
 RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
