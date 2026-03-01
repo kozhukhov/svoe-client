@@ -1,6 +1,12 @@
 'use client';
 
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import {
+  createContext,
+  type ReactNode,
+  useCallback,
+  useContext,
+  useState,
+} from 'react';
 
 import { MenuItemDTO } from 'modules/menu/dto';
 
@@ -156,7 +162,7 @@ const isTheSameItem = (item1: BasketItem, item2: BasketItem) => {
   );
 };
 
-export const BasketProvider = ({ children }: { children: React.ReactNode }) => {
+export const BasketProvider = ({ children }: { children: ReactNode }) => {
   const [items, setBasket] = useState<BasketItem[]>([]);
 
   const addItem = (item: BasketItem) => {

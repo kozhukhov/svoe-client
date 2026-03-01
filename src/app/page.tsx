@@ -1,3 +1,5 @@
+'use client';
+
 import { PizzaLoader } from 'theme/components/PizzaLoader';
 
 import * as Styled from './styled';
