@@ -1,3 +1,5 @@
+'use client';
+
 import { Border, Box, Cheese, Crust, Olive, Peperoni, Slice } from './styled';
 
 export const PizzaLoader = () => {

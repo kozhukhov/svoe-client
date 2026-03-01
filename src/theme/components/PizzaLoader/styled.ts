@@ -1,3 +1,5 @@
+'use client';
+
 import styled, { css, keyframes } from 'styled-components';
 
 type SliceVariant = 1 | 2 | 3 | 4 | 5;

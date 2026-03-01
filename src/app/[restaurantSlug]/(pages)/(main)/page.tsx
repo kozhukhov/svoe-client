@@ -11,7 +11,7 @@ import { getMenu } from 'modules/menu/service';
 import { useActiveRestaurant } from 'modules/restaurant/hooks';
 
 import { ItemCard } from './_containers/ItemCrad';
-// import { PromoBanners } from './_containers/PromoBanners';
+import { PromoBanners } from './_containers/PromoBanners';
 import * as Styled from './styled';
 
 type MenuResponse = {
@@ -202,6 +202,10 @@ export default function MainPage() {
   return (
     <div>
       <Section withoutMarginBottom>
+        <PromoBanners />
+      </Section>
+
+      <Section withoutMarginBottom>
         <Headline level={5} marginBottom="8px">
           Категории
         </Headline>
@@ -250,7 +254,11 @@ export default function MainPage() {
               </Headline>
               <Styled.Items>
                 {category.items.map((item) => (
-                  <ItemCard categoryName={category.name} item={item} key={item.id} />
+                  <ItemCard
+                    categoryName={category.name}
+                    item={item}
+                    key={item.id}
+                  />
                 ))}
               </Styled.Items>
             </Styled.CategorySection>
