@@ -89,6 +89,35 @@ export const WelcomeAccent = styled.div`
   }
 `;
 
+export const SliderSkeleton = styled.div`
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 60%;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  background: #f5f5f5;
+
+  @media (max-width: 968px) {
+    padding-bottom: 50%;
+  }
+
+  @media (max-width: 768px) {
+    padding-bottom: 60%;
+  }
+`;
+
+export const SliderSkeletonInner = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 20px;
+  overflow: hidden;
+`;
+
 export const SliderContainer = styled.div`
   position: relative;
   width: 100%;

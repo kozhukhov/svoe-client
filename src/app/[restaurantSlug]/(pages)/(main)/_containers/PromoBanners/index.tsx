@@ -1,44 +1,13 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useFetch } from 'lib/services/APIService';
 import { Skeleton } from 'theme/components/Skeleton';
 
+import { getBanners } from 'modules/banner/service';
 import { useActiveRestaurant } from 'modules/restaurant/hooks';
 
 import * as Styled from './styled';
-
-type Banner = {
-  id: string;
-  image: string;
-  title?: string;
-  description?: string;
-  link?: string;
-};
-
-// Пример данных баннеров - в будущем можно получать с API
-const mockBanners: Banner[] = [
-  {
-    id: '1',
-    image:
-      'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&h=400&fit=crop',
-    title: 'Скидка 20% на все блюда',
-    description: 'Только сегодня! Успейте заказать',
-  },
-  {
-    id: '2',
-    image:
-      'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&h=400&fit=crop',
-    title: 'Бесплатная доставка',
-    description: 'При заказе от 1000 рублей',
-  },
-  {
-    id: '3',
-    image:
-      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&h=400&fit=crop',
-    title: 'Новое меню',
-    description: 'Попробуйте наши новые блюда',
-  },
-];
 
 export const PromoBanners = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -50,7 +19,25 @@ export const PromoBanners = () => {
 
   const { activeRestaurant } = useActiveRestaurant();
 
-  const banners = mockBanners;
+  const bannersKey = activeRestaurant?.id
+    ? getBanners.getUrl({ restaurantId: activeRestaurant.id })
+    : null;
+
+  const { data: bannersData, isLoading: isBannersLoading } = useFetch<
+    Awaited<ReturnType<typeof getBanners.request>>
+  >(bannersKey, getBanners.request);
+
+  const banners = useMemo(
+    () =>
+      (bannersData ?? []).map((b) => ({
+        id: b.id,
+        image: b.imageUrl,
+        title: b.title ?? undefined,
+        description: b.description ?? undefined,
+        link: b.linkUrl ?? undefined,
+      })),
+    [bannersData],
+  );
 
   const deliveryMinSum =
     activeRestaurant?.deliveryMinFreeSum != null
@@ -136,7 +123,13 @@ export const PromoBanners = () => {
           </Styled.WelcomeDescription>
         </Styled.WelcomeSection>
 
-        {banners.length > 0 && (
+        {isBannersLoading ? (
+          <Styled.SliderSkeleton>
+            <Styled.SliderSkeletonInner>
+              <Skeleton height="100%" width="100%" />
+            </Styled.SliderSkeletonInner>
+          </Styled.SliderSkeleton>
+        ) : banners.length > 0 ? (
           <Styled.SliderContainer>
             <Styled.Slider
               $currentIndex={currentIndex}
@@ -178,7 +171,7 @@ export const PromoBanners = () => {
               </Styled.ProgressBars>
             )}
           </Styled.SliderContainer>
-        )}
+        ) : null}
       </Styled.Content>
     </Styled.Wrapper>
   );

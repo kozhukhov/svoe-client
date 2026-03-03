@@ -121,6 +121,11 @@ export const ItemCard: FC<Props> = ({ categoryName, item }) => {
     return /(суш|ролл)/.test(text);
   }, [categoryName]);
 
+  const isPizzaCategory = useMemo(() => {
+    const text = (categoryName ?? '').toLowerCase();
+    return /(пицц)/.test(text);
+  }, [categoryName]);
+
   const imageAspectRatio = useMemo(
     () => (isSushiCategory ? '1 / 0.7' : '1 / 1'),
     [isSushiCategory],
@@ -133,10 +138,17 @@ export const ItemCard: FC<Props> = ({ categoryName, item }) => {
 
   const measure = useMemo(
     () =>
-      activeSize.weight
-        ? `${Math.round(activeSize.weight)} ${MAP_FROM_TYPE_TO_LABEL[activeSize.measureUnitType]}${sushiPiecesSuffix}`
-        : '1 шт',
-    [activeSize.weight, activeSize.measureUnitType, sushiPiecesSuffix],
+      isPizzaCategory
+        ? ''
+        : activeSize.weight
+          ? `${Math.round(activeSize.weight)} ${MAP_FROM_TYPE_TO_LABEL[activeSize.measureUnitType]}${sushiPiecesSuffix}`
+          : '1 шт',
+    [
+      isPizzaCategory,
+      activeSize.weight,
+      activeSize.measureUnitType,
+      sushiPiecesSuffix,
+    ],
   );
 
   const actionButton = useMemo(() => {
