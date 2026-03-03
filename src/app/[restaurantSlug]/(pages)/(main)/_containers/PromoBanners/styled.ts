@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -14,14 +14,14 @@ export const Content = styled.div`
 
   @media (max-width: 968px) {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 0px;
   }
 `;
 
 export const WelcomeSection = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
   padding: 24px 0;
 `;
 
@@ -65,7 +65,7 @@ export const WelcomeDescription = styled.p`
   font-size: 16px;
   font-weight: 400;
   color: #475467;
-  margin: 12px 0 0 0;
+  margin: 0;
   line-height: 1.6;
   max-width: 90%;
 
@@ -89,23 +89,17 @@ export const WelcomeAccent = styled.div`
   }
 `;
 
+/* Пропорции слайдера 555×334 */
+
 export const SliderSkeleton = styled.div`
   position: relative;
   width: 100%;
-  height: 0;
-  padding-bottom: 60%;
+  max-width: 555px;
+  aspect-ratio: 555 / 334;
   overflow: hidden;
   border-radius: 20px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   background: #f5f5f5;
-
-  @media (max-width: 968px) {
-    padding-bottom: 50%;
-  }
-
-  @media (max-width: 768px) {
-    padding-bottom: 60%;
-  }
 `;
 
 export const SliderSkeletonInner = styled.div`
@@ -121,6 +115,7 @@ export const SliderSkeletonInner = styled.div`
 export const SliderContainer = styled.div`
   position: relative;
   width: 100%;
+  aspect-ratio: 555 / 334;
   overflow: hidden;
   border-radius: 20px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -129,6 +124,7 @@ export const SliderContainer = styled.div`
 
 export const Slider = styled.div<{ $currentIndex: number }>`
   display: flex;
+  height: 100%;
   transition: transform 0.5s ease-in-out;
   transform: translateX(${({ $currentIndex }) => `-${$currentIndex * 100}%`});
 `;
@@ -138,17 +134,8 @@ export const Slide = styled.div`
   width: 100%;
   min-width: 100%;
   flex-shrink: 0;
-  height: 0;
-  padding-bottom: 60%;
+  height: 100%;
   overflow: hidden;
-
-  @media (max-width: 968px) {
-    padding-bottom: 50%;
-  }
-
-  @media (max-width: 768px) {
-    padding-bottom: 60%;
-  }
 `;
 
 export const SkeletonWrapper = styled.div`
