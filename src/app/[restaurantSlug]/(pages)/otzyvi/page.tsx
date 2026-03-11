@@ -1,99 +1,52 @@
-'use client';
+import { getURLWithQueryParams } from 'lib/services/APIService/utils';
+import { serverGet } from 'lib/services/fetchServer';
 
-import { useMemo } from 'react';
-import { PageLayout } from 'app/_layout/PageLayout';
-import { Section } from 'app/_layout/Section';
-import { SectionInfo } from 'app/_layout/SectionInfo';
-import { formatToLongDate } from 'lib/utils';
-import { useRouter } from 'next/navigation';
-import { PrimaryButton } from 'theme/components/Button';
-import { Skeleton } from 'theme/components/Skeleton';
-import { Paragraph } from 'theme/components/Typography';
+import { RestaurantDTO } from 'modules/restaurant/dto';
+import { ReviewDTO } from 'modules/review/dto';
 
-import { useActiveRestaurant } from 'modules/restaurant/hooks';
-import { useReviews } from 'modules/review/hooks';
+import { OtzyviPageClient } from './_containers/OtzyviPageClient';
 
-import * as Styled from './styled';
+type APIResultWithPagination<T> = {
+  items: T[];
+  hasMore: boolean;
+  total: number;
+};
 
-export default function OtzyviPage() {
-  const router = useRouter();
+type PageParams = { restaurantSlug: string };
 
-  const { activeRestaurant } = useActiveRestaurant();
+export default async function OtzyviPage({
+  params,
+}: {
+  params: Promise<PageParams>;
+}) {
+  const { restaurantSlug } = await params;
 
-  const {
-    reviews,
-    reviewsHasMore,
-    reviewsTotal,
-    isReviewsLoading,
-    isReviewsValidating,
-    loadMoreReviews,
-  } = useReviews();
+  const restaurantsResult = await serverGet<
+    APIResultWithPagination<RestaurantDTO>
+  >(getURLWithQueryParams('restaurants', {}));
 
-  const reviewWord = useMemo(
-    () =>
-      Number(reviewsTotal.toString().split('').pop()) < 5
-        ? 'отзыва'
-        : 'отзывов',
-    [reviewsTotal],
+  const restaurant = restaurantsResult.items.find(
+    (r) => r.slug === restaurantSlug,
+  );
+
+  if (!restaurant) {
+    return null;
+  }
+
+  const reviewsResult = await serverGet<APIResultWithPagination<ReviewDTO>>(
+    getURLWithQueryParams('reviews', {
+      restaurant_id: restaurant.id,
+      page: '1',
+    }),
   );
 
   return (
-    <Section>
-      <SectionInfo
-        center
-        content={
-          <PrimaryButton
-            label="Оставить отзыв"
-            onClick={() => router.push(`/${activeRestaurant?.slug}/otzyvi/add`)}
-          />
-        }
-        description="Мы внимательно читаем каждое мнение, чтобы делать наши блюда и сервис ещё лучше."
-        title={
-          <>
-            Всего собрано <Styled.Count>{reviewsTotal}</Styled.Count>{' '}
-            {reviewWord} от наших гостей
-          </>
-        }
-      />
-      {isReviewsLoading ? (
-        <Styled.Reviews>
-          <Skeleton height="140px" width="100%" />
-          <Skeleton height="140px" width="100%" />
-          <Skeleton height="140px" width="100%" />
-          <Skeleton height="140px" width="100%" />
-          <Skeleton height="140px" width="100%" />
-          <Skeleton height="140px" width="100%" />
-        </Styled.Reviews>
-      ) : (
-        <PageLayout
-          hasMore={reviewsHasMore}
-          isLoading={isReviewsLoading}
-          isValidating={isReviewsValidating}
-          loadMore={loadMoreReviews}
-        >
-          <Styled.Reviews>
-            {reviews.map((review) => (
-              <Styled.ReviewCard key={review.id}>
-                <Styled.ReviewHeader>
-                  <div>
-                    <Paragraph fontWeight={700} level={2}>
-                      {review.name}
-                    </Paragraph>
-                    <Paragraph level={3}>
-                      {formatToLongDate(review.date)}
-                    </Paragraph>
-                  </div>
-                  <Styled.RatingBadge>
-                    <span aria-hidden>★</span>
-                    {review.rating.toFixed(1)}
-                  </Styled.RatingBadge>
-                </Styled.ReviewHeader>
-                <Paragraph level={3}>{review.content}</Paragraph>
-              </Styled.ReviewCard>
-            ))}
-          </Styled.Reviews>
-        </PageLayout>
-      )}
-    </Section>
+    <OtzyviPageClient
+      initialHasMore={reviewsResult.hasMore}
+      initialReviews={reviewsResult.items}
+      initialTotal={reviewsResult.total}
+      restaurantId={restaurant.id}
+      restaurantSlug={restaurantSlug}
+    />
   );
 }

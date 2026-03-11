@@ -47,19 +47,19 @@ export const MENU = [
       },
     ],
   },
-  {
-    title: 'Меню',
-    items: [
-      {
-        title: 'Бургеры',
-        url: '/menu/burgers',
-      },
-      {
-        title: 'Пиццы',
-        url: '/menu/pizzas',
-      },
-    ],
-  },
+  // {
+  //   title: 'Меню',
+  //   items: [
+  //     {
+  //       title: 'Бургеры',
+  //       url: '/menu/burgers',
+  //     },
+  //     {
+  //       title: 'Пиццы',
+  //       url: '/menu/pizzas',
+  //     },
+  //   ],
+  // },
   // {
   //   title: 'Акции',
   //   items: [
