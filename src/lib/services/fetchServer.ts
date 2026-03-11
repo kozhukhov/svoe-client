@@ -1,4 +1,5 @@
-const BASE_URL = 'https://admin.svoecafe.by/api/public/';
+const BASE_URL =
+  process.env.SERVER_API_URL ?? 'https://admin.svoecafe.by/api/public/';
 
 export async function serverGet<T>(path: string): Promise<T> {
   const res = await fetch(BASE_URL + path, {
