@@ -4,7 +4,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { IoLocationOutline } from 'react-icons/io5';
 import { BasketProvider } from 'lib/context/basket';
 import { LocalStorageService } from 'lib/services/LocalStorageService';
-import { redirect } from 'next/navigation';
+import { redirect, usePathname } from 'next/navigation';
 import { PrimaryButton, SecondaryButton } from 'theme/components/Button';
 import { FlexBox } from 'theme/components/FlexBox';
 import { PizzaLoader } from 'theme/components/PizzaLoader';
@@ -45,6 +45,8 @@ export const Application = ({ children }: { children: React.ReactNode }) => {
   const [rejectedLocation, setRejectedLocation] = useState(false);
   const [isBasketOpen, setIsBasketOpen] = useState(false);
 
+  const pathname = usePathname();
+
   const { isLoading: isInitIIKOLoading, error: isInitIIKOError } =
     useInitIIKO();
 
@@ -76,13 +78,16 @@ export const Application = ({ children }: { children: React.ReactNode }) => {
     [approvedLocation, shouldShowDialogApproveLocation, rejectedLocation],
   );
 
-  const setRestaurantLocation = useCallback((slug: string) => {
-    LocalStorageService.set(LOCAL_STORAGE_KEY, slug);
+  const setRestaurantLocation = useCallback(
+    (slug: string) => {
+      LocalStorageService.set(LOCAL_STORAGE_KEY, slug);
+      setApprovedLocation(true);
 
-    setApprovedLocation(true);
-
-    redirect(`/${slug}`);
-  }, []);
+      const subPath = pathname.split('/').filter(Boolean).slice(1).join('/');
+      redirect(subPath ? `/${slug}/${subPath}` : `/${slug}`);
+    },
+    [pathname],
+  );
 
   if (isRestaurantsLoading || isInitIIKOLoading) {
     return (

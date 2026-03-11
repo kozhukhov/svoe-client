@@ -148,6 +148,7 @@ export default function NovyOtzyvPage() {
                 fullWidth
                 label="Отправить отзыв"
                 loading={isLoading}
+                onClick={handleSubmit(onSubmit)}
               />
             </form>
           </FlexBox>

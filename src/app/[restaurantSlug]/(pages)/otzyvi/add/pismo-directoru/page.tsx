@@ -92,6 +92,7 @@ export default function PismoDirectoruPage() {
                 fullWidth
                 label="Отправить письмо"
                 loading={isLoading}
+                onClick={handleSubmit(onSubmit)}
               />
             </form>
           </FlexBox>
