@@ -2,7 +2,6 @@ import { getURLWithQueryParams } from 'lib/services/APIService/utils';
 import { serverGet } from 'lib/services/fetchServer';
 
 import { BannerDTO } from 'modules/banner/dto';
-import { MenuDTO } from 'modules/menu/dto';
 import { RestaurantDTO } from 'modules/restaurant/dto';
 
 import { MainPageClient } from './_containers/MainPageClient';
@@ -30,20 +29,15 @@ export default async function MainPage({
     return null;
   }
 
-  const [menuResult, bannersResult] = await Promise.all([
-    serverGet<{ categories: MenuDTO[] }>(
-      getURLWithQueryParams('menu', { restaurant_id: restaurant.id }),
-    ),
-    serverGet<BannerDTO[]>(
-      getURLWithQueryParams('banners', { restaurant_id: restaurant.id }),
-    ),
-  ]);
+  const bannersResult = await serverGet<BannerDTO[]>(
+    getURLWithQueryParams('banners', { restaurant_id: restaurant.id }),
+  );
 
   return (
     <MainPageClient
       deliveryMinFreeSum={restaurant.deliveryMinFreeSum ?? 35}
       initialBanners={bannersResult}
-      initialCategories={menuResult.categories}
+      restaurantId={restaurant.id}
     />
   );
 }

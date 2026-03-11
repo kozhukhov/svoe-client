@@ -1,32 +1,44 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Section } from 'app/_layout/Section';
+import { useFetch } from 'lib/services/APIService';
+import { Skeleton } from 'theme/components/Skeleton';
 import { Headline, Paragraph } from 'theme/components/Typography';
 
 import { BannerDTO } from 'modules/banner/dto';
 import { MenuDTO } from 'modules/menu/dto';
+import { getMenu } from 'modules/menu/service';
+
+import * as Styled from '../styled';
 
 import { ItemCard } from './ItemCrad';
 import { PromoBanners } from './PromoBanners';
-import * as Styled from '../styled';
+
+type MenuResponse = { categories: MenuDTO[] };
 
 type Props = {
-  initialCategories: MenuDTO[];
+  restaurantId: string;
   initialBanners: BannerDTO[];
   deliveryMinFreeSum: number;
 };
 
 export const MainPageClient = ({
-  initialCategories,
+  restaurantId,
   initialBanners,
   deliveryMinFreeSum,
 }: Props) => {
-  const categories = initialCategories.filter((c) => c.items.length > 0);
-
-  const [activeCategoryId, setActiveCategoryId] = useState<string>(
-    categories[0]?.id ?? '',
+  const { data: menu, isLoading: isMenuLoading } = useFetch<MenuResponse>(
+    getMenu.getUrl({ restaurantID: restaurantId }),
+    getMenu.request,
   );
+
+  const categories = useMemo(
+    () => (menu?.categories ?? []).filter((c) => c.items.length > 0),
+    [menu?.categories],
+  );
+
+  const [activeCategoryId, setActiveCategoryId] = useState<string>('');
   const [isFixedCategoriesVisible, setIsFixedCategoriesVisible] =
     useState(false);
 
@@ -107,6 +119,12 @@ export const MainPageClient = ({
   }, [categories, isFixedCategoriesVisible]);
 
   useEffect(() => {
+    if (activeCategoryId) return;
+    if (categories.length === 0) return;
+    setActiveCategoryId(categories[0].id);
+  }, [activeCategoryId, categories]);
+
+  useEffect(() => {
     if (categories.length === 0) return;
     const wrapper = stickyCategoriesWrapperRef.current;
     if (!wrapper) return;
@@ -143,33 +161,44 @@ export const MainPageClient = ({
         if (variant === 'fixed') fixedCategoriesRef.current = el;
       }}
     >
-      {categories.map((category) => (
-        <Styled.CategoryCard
-          $active={category.id === activeCategoryId}
-          key={category.id}
-          ref={(el) => {
-            if (variant === 'inline') pillsInlineRef.current[category.id] = el;
-            if (variant === 'fixed') pillsFixedRef.current[category.id] = el;
-          }}
-          type="button"
-          onClick={() => {
-            setActiveCategoryId(category.id);
-            sectionsRef.current[category.id]?.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start',
-            });
-          }}
-        >
-          <Paragraph
-            noWrap
-            color={category.id === activeCategoryId ? '#3f8f4a' : '#475467'}
-            fontWeight={700}
-            level={3}
+      {isMenuLoading ? (
+        <>
+          <Styled.CategoryCardSekeleton />
+          <Styled.CategoryCardSekeleton />
+          <Styled.CategoryCardSekeleton />
+          <Styled.CategoryCardSekeleton />
+          <Styled.CategoryCardSekeleton />
+        </>
+      ) : (
+        categories.map((category) => (
+          <Styled.CategoryCard
+            $active={category.id === activeCategoryId}
+            key={category.id}
+            ref={(el) => {
+              if (variant === 'inline')
+                pillsInlineRef.current[category.id] = el;
+              if (variant === 'fixed') pillsFixedRef.current[category.id] = el;
+            }}
+            type="button"
+            onClick={() => {
+              setActiveCategoryId(category.id);
+              sectionsRef.current[category.id]?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+              });
+            }}
           >
-            {category.name}
-          </Paragraph>
-        </Styled.CategoryCard>
-      ))}
+            <Paragraph
+              noWrap
+              color={category.id === activeCategoryId ? '#3f8f4a' : '#475467'}
+              fontWeight={700}
+              level={3}
+            >
+              {category.name}
+            </Paragraph>
+          </Styled.CategoryCard>
+        ))
+      )}
     </Styled.Categories>
   );
 
@@ -203,29 +232,45 @@ export const MainPageClient = ({
 
       <Styled.ProductsTopSpacer />
 
-      {categories.map((category) => (
-        <Section key={category.id}>
-          <Styled.CategorySection
-            data-category-id={category.id}
-            ref={(el) => {
-              sectionsRef.current[category.id] = el;
-            }}
-          >
-            <Headline level={4} marginBottom="16px">
-              {category.name}
-            </Headline>
-            <Styled.Items>
-              {category.items.map((item) => (
-                <ItemCard
-                  categoryName={category.name}
-                  item={item}
-                  key={item.id}
-                />
-              ))}
-            </Styled.Items>
-          </Styled.CategorySection>
-        </Section>
-      ))}
+      {isMenuLoading ? (
+        <>
+          {[1, 2, 3, 4, 5].map((item) => (
+            <Section key={item}>
+              <Skeleton height="36px" marginBottom="16px" width="100px" />
+              <Styled.Items>
+                <Skeleton height="200px" width="100%" />
+                <Skeleton height="200px" width="100%" />
+                <Skeleton height="200px" width="100%" />
+                <Skeleton height="200px" width="100%" />
+              </Styled.Items>
+            </Section>
+          ))}
+        </>
+      ) : (
+        categories.map((category) => (
+          <Section key={category.id}>
+            <Styled.CategorySection
+              data-category-id={category.id}
+              ref={(el) => {
+                sectionsRef.current[category.id] = el;
+              }}
+            >
+              <Headline level={4} marginBottom="16px">
+                {category.name}
+              </Headline>
+              <Styled.Items>
+                {category.items.map((item) => (
+                  <ItemCard
+                    categoryName={category.name}
+                    item={item}
+                    key={item.id}
+                  />
+                ))}
+              </Styled.Items>
+            </Styled.CategorySection>
+          </Section>
+        ))
+      )}
     </div>
   );
 };
