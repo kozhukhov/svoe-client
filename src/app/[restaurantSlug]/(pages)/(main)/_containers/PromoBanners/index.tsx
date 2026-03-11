@@ -4,12 +4,21 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useFetch } from 'lib/services/APIService';
 import { Skeleton } from 'theme/components/Skeleton';
 
+import { BannerDTO } from 'modules/banner/dto';
 import { getBanners } from 'modules/banner/service';
 import { useActiveRestaurant } from 'modules/restaurant/hooks';
 
 import * as Styled from './styled';
 
-export const PromoBanners = () => {
+type Props = {
+  initialBanners?: BannerDTO[];
+  deliveryMinFreeSum?: number;
+};
+
+export const PromoBanners = ({
+  initialBanners,
+  deliveryMinFreeSum: initialDeliveryMinFreeSum,
+}: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
@@ -19,9 +28,10 @@ export const PromoBanners = () => {
 
   const { activeRestaurant } = useActiveRestaurant();
 
-  const bannersKey = activeRestaurant?.id
-    ? getBanners.getUrl({ restaurantId: activeRestaurant.id })
-    : null;
+  const bannersKey =
+    !initialBanners && activeRestaurant?.id
+      ? getBanners.getUrl({ restaurantId: activeRestaurant.id })
+      : null;
 
   const { data: bannersData, isLoading: isBannersLoading } = useFetch<
     Awaited<ReturnType<typeof getBanners.request>>
@@ -29,25 +39,28 @@ export const PromoBanners = () => {
 
   const banners = useMemo(
     () =>
-      (bannersData ?? []).map((b) => ({
+      (initialBanners ?? bannersData ?? []).map((b) => ({
         id: b.id,
         image: b.imageUrl,
         title: b.title ?? undefined,
         description: b.description ?? undefined,
         link: b.linkUrl ?? undefined,
       })),
-    [bannersData],
+    [initialBanners, bannersData],
   );
 
+  const isLoading = !initialBanners && isBannersLoading;
+
   const deliveryMinSum =
-    activeRestaurant?.deliveryMinFreeSum != null
-      ? Math.round(activeRestaurant.deliveryMinFreeSum)
-      : 35;
+    initialDeliveryMinFreeSum != null
+      ? Math.round(initialDeliveryMinFreeSum)
+      : activeRestaurant?.deliveryMinFreeSum != null
+        ? Math.round(activeRestaurant.deliveryMinFreeSum)
+        : 35;
 
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
     setIsAutoPlaying(false);
-    // Возобновляем автопрокрутку через 5 секунд
     setTimeout(() => setIsAutoPlaying(true), 5000);
   };
 
@@ -123,7 +136,7 @@ export const PromoBanners = () => {
           </Styled.WelcomeDescription>
         </Styled.WelcomeSection>
 
-        {isBannersLoading ? (
+        {isLoading ? (
           <Styled.SliderSkeleton>
             <Styled.SliderSkeletonInner>
               <Skeleton height="100%" width="100%" />
