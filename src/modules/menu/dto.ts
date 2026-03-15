@@ -6,6 +6,7 @@ export enum MeasureUnitType {
 
 export enum MenuItemLabel {
   NEW = 'new',
+  BESTSELLER = 'bestseller',
 }
 
 export type MenuItemModifierGroupDTO = {
@@ -46,7 +47,8 @@ export type MenuItemDTO = {
 };
 
 export type MenuDTO = {
-  name: string;
   id: string;
   items: MenuItemDTO[];
+  labels: string[];
+  name: string;
 };

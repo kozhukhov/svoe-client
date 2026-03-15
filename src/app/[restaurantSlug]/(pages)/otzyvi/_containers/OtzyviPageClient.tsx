@@ -11,6 +11,7 @@ import { Paragraph } from 'theme/components/Typography';
 
 import { ReviewDTO } from 'modules/review/dto';
 import { getReviews } from 'modules/review/service';
+import { SeoDataDTO } from 'modules/seo/dto';
 
 import * as Styled from '../styled';
 
@@ -20,6 +21,7 @@ type Props = {
   initialTotal: number;
   restaurantId: string;
   restaurantSlug: string;
+  seoData: SeoDataDTO;
 };
 
 export const OtzyviPageClient = ({
@@ -28,6 +30,7 @@ export const OtzyviPageClient = ({
   initialTotal,
   restaurantId,
   restaurantSlug,
+  seoData,
 }: Props) => {
   const router = useRouter();
   const [reviews, setReviews] = useState(initialReviews);
@@ -66,7 +69,7 @@ export const OtzyviPageClient = ({
             onClick={() => router.push(`/${restaurantSlug}/otzyvi/add`)}
           />
         }
-        description="Мы внимательно читаем каждое мнение, чтобы делать наши блюда и сервис ещё лучше."
+        description={seoData.description ?? ''}
         title={
           <>
             Всего собрано <Styled.Count>{initialTotal}</Styled.Count>{' '}

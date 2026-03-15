@@ -7,17 +7,20 @@ import { Skeleton } from 'theme/components/Skeleton';
 import { BannerDTO } from 'modules/banner/dto';
 import { getBanners } from 'modules/banner/service';
 import { useActiveRestaurant } from 'modules/restaurant/hooks';
+import { SeoDataDTO } from 'modules/seo/dto';
 
 import * as Styled from './styled';
 
 type Props = {
   initialBanners?: BannerDTO[];
   deliveryMinFreeSum?: number;
+  seoData: SeoDataDTO;
 };
 
 export const PromoBanners = ({
   initialBanners,
-  deliveryMinFreeSum: initialDeliveryMinFreeSum,
+  // deliveryMinFreeSum: initialDeliveryMinFreeSum,
+  seoData,
 }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -51,12 +54,12 @@ export const PromoBanners = ({
 
   const isLoading = !initialBanners && isBannersLoading;
 
-  const deliveryMinSum =
-    initialDeliveryMinFreeSum != null
-      ? Math.round(initialDeliveryMinFreeSum)
-      : activeRestaurant?.deliveryMinFreeSum != null
-        ? Math.round(activeRestaurant.deliveryMinFreeSum)
-        : 35;
+  // const deliveryMinSum =
+  //   initialDeliveryMinFreeSum != null
+  //     ? Math.round(initialDeliveryMinFreeSum)
+  //     : activeRestaurant?.deliveryMinFreeSum != null
+  //       ? Math.round(activeRestaurant.deliveryMinFreeSum)
+  //       : 35;
 
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
@@ -126,13 +129,9 @@ export const PromoBanners = ({
     <Styled.Wrapper>
       <Styled.Content>
         <Styled.WelcomeSection>
-          <Styled.WelcomeTitle>
-            Бесплатная доставка по всему городу от{' '}
-            <Styled.Price>{deliveryMinSum}</Styled.Price> рублей
-          </Styled.WelcomeTitle>
+          <Styled.WelcomeTitle>{seoData.title ?? ''}</Styled.WelcomeTitle>
           <Styled.WelcomeDescription>
-            Закажите вкусные блюда с доставкой или самовывозом. Свежие
-            ингредиенты и быстрое приготовление.
+            {seoData.description ?? ''}
           </Styled.WelcomeDescription>
         </Styled.WelcomeSection>
 

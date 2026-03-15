@@ -7,21 +7,23 @@ import { MapWithActions } from 'theme/components/MapWithActions';
 import { Headline, Paragraph } from 'theme/components/Typography';
 
 import { RestaurantDTO } from 'modules/restaurant/dto';
+import { SeoDataDTO } from 'modules/seo/dto';
 
 import { getContactCards } from '../constants';
 import * as Styled from '../styled';
 
 type Props = {
   restaurant: RestaurantDTO;
+  seoData: SeoDataDTO;
 };
 
-export const KontaktyPageClient = ({ restaurant }: Props) => {
+export const KontaktyPageClient = ({ restaurant, seoData }: Props) => {
   return (
     <Section>
       <SectionInfo
-        description="Доставка пиццы и роллов по всему городу, удобный самовывоз, актуальный график работы и телефон для заказов. Быстро принимаем заказы, подсказываем меню и организуем доставку"
+        description={seoData.description ?? ''}
         label="Контакты"
-        title={`Контакты ресторана в городе ${restaurant.city}`}
+        title={seoData.title ?? ''}
       />
       <Styled.InfoGrid>
         {getContactCards(restaurant).map((card) => (

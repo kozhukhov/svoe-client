@@ -8,21 +8,23 @@ import { MapWithActions } from 'theme/components/MapWithActions';
 import { Headline, Paragraph } from 'theme/components/Typography';
 
 import { RestaurantDTO } from 'modules/restaurant/dto';
+import { SeoDataDTO } from 'modules/seo/dto';
 
 import { getDeliveryCards, ITEMS } from '../constants';
 import * as Styled from '../styled';
 
 type Props = {
   restaurant: RestaurantDTO;
+  seoData: SeoDataDTO;
 };
 
-export const DostavkaPageClient = ({ restaurant }: Props) => {
+export const DostavkaPageClient = ({ restaurant, seoData }: Props) => {
   return (
     <Section>
       <SectionInfo
-        description={`Доставка пиццы и роллов по городу ${restaurant.city} - быстро и удобно. Бесплатная доставка от ${restaurant.deliveryMinFreeSum?.toFixed(2)} BYN, удобные способы оплаты, понятный график работы и собственные курьеры. Забирайте заказ самовывозом или оформляйте доставку домой и в офис.`}
+        description={seoData.description ?? ''}
         label="Доставка и оплата"
-        title={`Доставка и оплата в городе ${restaurant.city}`}
+        title={seoData.title ?? ''}
       />
 
       <Styled.InfoGrid>

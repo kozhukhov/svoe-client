@@ -1,8 +1,10 @@
 import { getURLWithQueryParams } from 'lib/services/APIService/utils';
 import { serverGet } from 'lib/services/fetchServer';
+import type { Metadata } from 'next';
 
 import { RestaurantDTO } from 'modules/restaurant/dto';
 import { ReviewDTO } from 'modules/review/dto';
+import { getSeoDataServer } from 'modules/seo/service';
 
 import { OtzyviPageClient } from './_containers/OtzyviPageClient';
 
@@ -13,6 +15,29 @@ type APIResultWithPagination<T> = {
 };
 
 type PageParams = { restaurantSlug: string };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<PageParams>;
+}): Promise<Metadata> {
+  const { restaurantSlug } = await params;
+  const restaurantsResult = await serverGet<
+    APIResultWithPagination<RestaurantDTO>
+  >(getURLWithQueryParams('restaurants', {}));
+  const restaurant = restaurantsResult.items.find(
+    (r) => r.slug === restaurantSlug,
+  );
+  if (!restaurant) return {};
+  const seoData = await getSeoDataServer({
+    restaurantId: restaurant.id,
+    url: 'otzyvi',
+  });
+  return {
+    title: seoData.metaTitle ?? undefined,
+    description: seoData.metaDescription ?? undefined,
+  };
+}
 
 export default async function OtzyviPage({
   params,
@@ -33,12 +58,18 @@ export default async function OtzyviPage({
     return null;
   }
 
-  const reviewsResult = await serverGet<APIResultWithPagination<ReviewDTO>>(
-    getURLWithQueryParams('reviews', {
-      restaurant_id: restaurant.id,
-      page: '1',
+  const [reviewsResult, seoData] = await Promise.all([
+    serverGet<APIResultWithPagination<ReviewDTO>>(
+      getURLWithQueryParams('reviews', {
+        restaurant_id: restaurant.id,
+        page: '1',
+      }),
+    ),
+    getSeoDataServer({
+      restaurantId: restaurant.id,
+      url: 'otzyvi',
     }),
-  );
+  ]);
 
   return (
     <OtzyviPageClient
@@ -47,6 +78,7 @@ export default async function OtzyviPage({
       initialTotal={reviewsResult.total}
       restaurantId={restaurant.id}
       restaurantSlug={restaurantSlug}
+      seoData={seoData}
     />
   );
 }

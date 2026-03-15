@@ -116,6 +116,11 @@ export const ItemCard: FC<Props> = ({ categoryName, item }) => {
     [item.labels],
   );
 
+  const isBestseller = useMemo(
+    () => (item.labels ?? []).includes(MenuItemLabel.BESTSELLER),
+    [item.labels],
+  );
+
   const isSushiCategory = useMemo(() => {
     const text = (categoryName ?? '').toLowerCase();
     return /(суш|ролл)/.test(text);
@@ -232,7 +237,7 @@ export const ItemCard: FC<Props> = ({ categoryName, item }) => {
           <Styled.Price>
             <span>{Number(finalPrice).toFixed(2)}</span> руб
           </Styled.Price>
-          <Styled.Measure>{measure}</Styled.Measure>
+          {measure ? <Styled.Measure>{measure}</Styled.Measure> : null}
         </Styled.PriceContainer>
         {actionButton}
       </>
@@ -253,6 +258,7 @@ export const ItemCard: FC<Props> = ({ categoryName, item }) => {
     <>
       <Styled.Card>
         {isNew && <Styled.Badge>Новинка</Styled.Badge>}
+        {isBestseller && <Styled.Badge>Хит</Styled.Badge>}
         <Styled.Wrapper>
           <Styled.ImageButton
             $loading={!isImageLoaded && Boolean(activeSize.image)}

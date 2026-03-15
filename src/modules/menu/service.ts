@@ -4,7 +4,12 @@ import {
   Service,
 } from 'lib/services/APIService';
 
-import { MenuDTO } from './dto';
+import { MenuDTO, MenuItemDTO } from './dto';
+
+export type CategoryResponse = {
+  label: string;
+  items: MenuItemDTO[];
+};
 
 export const getMenu: Service<
   {
@@ -21,4 +26,13 @@ export const getMenu: Service<
 
     return result;
   },
+};
+
+export const getCategory: Service<
+  { restaurantID: string; categorySlug: string },
+  CategoryResponse
+> = {
+  getUrl: (params) =>
+    `menu/${params?.categorySlug ?? ''}?${new URLSearchParams({ restaurant_id: params?.restaurantID ?? '' }).toString()}`,
+  request: async (url) => apiService.get<CategoryResponse>(url),
 };

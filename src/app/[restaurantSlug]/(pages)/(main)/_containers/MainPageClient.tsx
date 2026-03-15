@@ -9,6 +9,7 @@ import { Headline, Paragraph } from 'theme/components/Typography';
 import { BannerDTO } from 'modules/banner/dto';
 import { MenuDTO } from 'modules/menu/dto';
 import { getMenu } from 'modules/menu/service';
+import { SeoDataDTO } from 'modules/seo/dto';
 
 import * as Styled from '../styled';
 
@@ -21,12 +22,14 @@ type Props = {
   restaurantId: string;
   initialBanners: BannerDTO[];
   deliveryMinFreeSum: number;
+  seoData: SeoDataDTO;
 };
 
 export const MainPageClient = ({
   restaurantId,
   initialBanners,
   deliveryMinFreeSum,
+  seoData,
 }: Props) => {
   const { data: menu, isLoading: isMenuLoading } = useFetch<MenuResponse>(
     getMenu.getUrl({ restaurantID: restaurantId }),
@@ -208,6 +211,7 @@ export const MainPageClient = ({
         <PromoBanners
           deliveryMinFreeSum={deliveryMinFreeSum}
           initialBanners={initialBanners}
+          seoData={seoData}
         />
       </Section>
 
