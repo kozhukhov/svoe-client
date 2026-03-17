@@ -1,4 +1,5 @@
 import { MdAccessTime, MdLocalShipping, MdPayment } from 'react-icons/md';
+import { formatPrice } from 'lib/utils';
 
 import { RestaurantDTO } from 'modules/restaurant/dto';
 
@@ -13,8 +14,8 @@ export const getDeliveryCards = (restaurant: RestaurantDTO) => {
     {
       icon: <MdLocalShipping />,
       name: 'Условия доставки',
-      value: `Бесплатно от ${restaurant?.deliveryMinFreeSum?.toFixed(2)} BYN`,
-      note: `При сумме заказа до ${restaurant?.deliveryMinFreeSum?.toFixed(2)} BYN стоимость доставки - ${restaurant?.deliveryPaidCost?.toFixed(2)} BYN.`,
+      value: `Бесплатно от ${formatPrice(restaurant?.deliveryMinFreeSum)} BYN`,
+      note: `При сумме заказа до ${formatPrice(restaurant?.deliveryMinFreeSum)} BYN стоимость доставки - ${formatPrice(restaurant?.deliveryPaidCost)} BYN.`,
     },
     {
       icon: <MdPayment />,

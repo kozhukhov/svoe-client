@@ -1,5 +1,6 @@
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { useItemBasket } from 'lib/context/basket';
+import { formatPrice } from 'lib/utils';
 import { PrimaryButton } from 'theme/components/Button';
 import { Switcher } from 'theme/components/Switcher';
 import { Paragraph } from 'theme/components/Typography';
@@ -235,7 +236,7 @@ export const ItemCard: FC<Props> = ({ categoryName, item }) => {
           ))}
         <Styled.PriceContainer>
           <Styled.Price>
-            <span>{Number(finalPrice).toFixed(2)}</span> руб
+            <span>{formatPrice(finalPrice)}</span> руб
           </Styled.Price>
           {measure ? <Styled.Measure>{measure}</Styled.Measure> : null}
         </Styled.PriceContainer>

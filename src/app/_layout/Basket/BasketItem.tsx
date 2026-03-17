@@ -4,6 +4,7 @@ import {
   BasketItem as BasketItemType,
   useItemBasket,
 } from 'lib/context/basket';
+import { formatPrice } from 'lib/utils';
 import { PrimaryButton, Size } from 'theme/components/Button';
 import { FlexBox } from 'theme/components/FlexBox';
 import { Paragraph } from 'theme/components/Typography';
@@ -21,10 +22,13 @@ export const BasketItem: FC<Props> = ({ item, compact = false }) => {
   );
 
   const isSushiCategory = /(суш|ролл)/i.test(item.categoryName ?? '');
+  const isPizzaCategory = /(пицц)/i.test(item.categoryName ?? '');
 
-  const measure = activeSize?.weight
-    ? `${Math.round(activeSize?.weight)} ${MAP_FROM_TYPE_TO_LABEL[activeSize?.measureUnitType]}${isSushiCategory ? ' | 8 шт' : ''}`
-    : '1 шт';
+  const measure = isPizzaCategory
+    ? ''
+    : activeSize?.weight
+      ? `${Math.round(activeSize?.weight)} ${MAP_FROM_TYPE_TO_LABEL[activeSize?.measureUnitType]}${isSushiCategory ? ' | 8 шт' : ''}`
+      : '1 шт';
 
   const { count, finalPrice, addItem, removeItem } = useItemBasket({
     productId: item.productId,
@@ -45,8 +49,9 @@ export const BasketItem: FC<Props> = ({ item, compact = false }) => {
                 {item.item.name}
               </Paragraph>
               <Styled.BasketItemDescription>
-                {measure}
-                {activeSize?.name && `, ${activeSize?.name} `}
+                {measure ? `${measure}${activeSize?.name ? ', ' : ''}` : ''}
+                {activeSize?.name ?? ''}
+                {activeSize?.name ? ' ' : ''}
                 {item.modifiers
                   .map((modifier) =>
                     activeSize?.itemModifierGroups
@@ -89,7 +94,7 @@ export const BasketItem: FC<Props> = ({ item, compact = false }) => {
                 level={2}
                 textAlign="right"
               >
-                {(finalPrice * count).toFixed(2)} руб
+                {formatPrice(finalPrice * count)} руб
               </Paragraph>
             </div>
           </FlexBox>
@@ -99,8 +104,9 @@ export const BasketItem: FC<Props> = ({ item, compact = false }) => {
               {item.item.name}
             </Paragraph>
             <Styled.BasketItemDescription>
-              {measure}
-              {activeSize?.name && `, ${activeSize?.name} `}
+              {measure ? `${measure}${activeSize?.name ? ', ' : ''}` : ''}
+              {activeSize?.name ?? ''}
+              {activeSize?.name ? ' ' : ''}
               {item.modifiers
                 .map((modifier) =>
                   activeSize?.itemModifierGroups
@@ -119,7 +125,7 @@ export const BasketItem: FC<Props> = ({ item, compact = false }) => {
                 <PrimaryButton label="+" type="button" onClick={addItem} />
               </Styled.ActionButton>
               <Paragraph color="#1D2939" fontWeight={600} level={2}>
-                {(finalPrice * count).toFixed(2)} руб
+                {formatPrice(finalPrice * count)} руб
               </Paragraph>
             </FlexBox>
           </>

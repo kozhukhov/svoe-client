@@ -5,6 +5,7 @@ import { BasketItem } from 'app/_layout/Basket/BasketItem';
 import { Section } from 'app/_layout/Section';
 import { useBasket, useItemBasket } from 'lib/context/basket';
 import { useFetch } from 'lib/services/APIService';
+import { formatPrice } from 'lib/utils';
 import { useRouter } from 'next/navigation';
 import { PrimaryButton, SecondaryButton, Size } from 'theme/components/Button';
 import { FormTextField } from 'theme/components/Fields/FormTextField';
@@ -397,16 +398,16 @@ export default function CheckoutPage() {
                 </Headline>
                 <Styled.SummaryBarTotals>
                   <Paragraph color="#1D2939" fontWeight={600} level={3}>
-                    Сумма: {finalPrice.toFixed(2)} руб
+                    Сумма: {formatPrice(finalPrice)} руб
                   </Paragraph>
                   <Paragraph color="#1D2939" fontWeight={600} level={3}>
                     Доставка:{' '}
                     {deliveryCost === 0
                       ? 'Бесплатно'
-                      : `${deliveryCost.toFixed(2)} руб`}
+                      : `${formatPrice(deliveryCost)} руб`}
                   </Paragraph>
                   <Paragraph color="#1D2939" fontWeight={700} level={2}>
-                    К оплате: {totalToPay.toFixed(2)} руб
+                    К оплате: {formatPrice(totalToPay)} руб
                   </Paragraph>
                 </Styled.SummaryBarTotals>
                 <Paragraph color="#98a2b3" level={4} marginTop="6px">
@@ -464,7 +465,7 @@ const UpsellSauceCard = ({ item }: { item: MenuItemDTO }) => {
         </Paragraph>
         <Styled.UpsellBottom>
           <Paragraph color="#1D2939" fontWeight={600} level={3}>
-            {Number(finalPrice).toFixed(2)} руб
+            {formatPrice(finalPrice)} руб
           </Paragraph>
           {count > 0 && (
             <Paragraph color="#3f8f4a" fontWeight={700} level={3}>
