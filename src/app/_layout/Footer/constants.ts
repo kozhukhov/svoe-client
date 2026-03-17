@@ -29,6 +29,11 @@ export const getSocials = (restaurant: RestaurantDTO) => {
   return result;
 };
 
+export const APP_STORE_URL =
+  'https://apps.apple.com/us/app/svoe-cafe/id1629647667';
+export const PLAY_MARKET_URL =
+  'https://play.google.com/store/apps/details?id=com.foodpicasso.svoecafe';
+
 export const MENU = [
   {
     title: 'Навигация',

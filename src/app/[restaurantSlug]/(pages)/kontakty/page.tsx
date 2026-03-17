@@ -3,7 +3,7 @@ import { serverGet } from 'lib/services/fetchServer';
 import type { Metadata } from 'next';
 
 import { RestaurantDTO } from 'modules/restaurant/dto';
-import { getSeoDataServer } from 'modules/seo/service';
+import { buildMetadataFromSeo, getSeoDataServer } from 'modules/seo/service';
 
 import { KontaktyPageClient } from './_containers/KontaktyPageClient';
 
@@ -32,10 +32,7 @@ export async function generateMetadata({
     restaurantId: restaurant.id,
     url: 'kontakty',
   });
-  return {
-    title: seoData.metaTitle ?? undefined,
-    description: seoData.metaDescription ?? undefined,
-  };
+  return buildMetadataFromSeo(seoData);
 }
 
 export default async function KontaktyPage({

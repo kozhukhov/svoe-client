@@ -96,6 +96,53 @@ export const MenuItem = styled(Paragraph).attrs({
   `}
 `;
 
+export const AppLinks = styled.div`
+  display: none;
+
+  ${({ theme: { media } }) => css`
+    ${media.tablet} {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-top: 6px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+  `}
+`;
+
+export const AppLinksTitle = styled.span`
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+`;
+
+export const AppLink = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-decoration: none;
+  padding: 2px 0;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    color: #3f8f4a;
+    border-bottom-color: #3f8f4a;
+  }
+`;
+
+export const AppLinkIcon = styled.span`
+  display: inline-flex;
+  flex-shrink: 0;
+`;
+
 export const MobileToggle = styled.div<{ $isOpen: boolean }>`
   display: contents;
 

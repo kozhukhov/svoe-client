@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { FaStar } from 'react-icons/fa';
+import { FaStar, FaYandex } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { Section } from 'app/_layout/Section';
 import { SectionInfo } from 'app/_layout/SectionInfo';
@@ -67,11 +67,26 @@ export default function NovyOtzyvPage() {
         center
         content={
           <FlexBox direction="column" gap="8px" marginTop="16px">
-            <SecondaryButton
-              fullWidth
-              icon={<FcGoogle size={20} />}
-              label="Оставить отзыв на Google картах"
-            />
+            {activeRestaurant?.googleMapUrl && (
+              <SecondaryButton
+                fullWidth
+                icon={<FcGoogle size={20} />}
+                label="Оставить отзыв на Google картах"
+                onClick={() => {
+                  window.open(activeRestaurant?.googleMapUrl || '', '_blank');
+                }}
+              />
+            )}
+            {activeRestaurant?.yandexMapUrl && (
+              <SecondaryButton
+                fullWidth
+                icon={<FaYandex size={20} />}
+                label="Оставить отзыв на Яндекс картах"
+                onClick={() => {
+                  window.open(activeRestaurant?.yandexMapUrl || '', '_blank');
+                }}
+              />
+            )}
             <Styled.Separator>Или</Styled.Separator>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Styled.StarsWrapper>

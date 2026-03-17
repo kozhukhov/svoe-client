@@ -122,3 +122,47 @@ export const Link = styled(Paragraph)`
 `;
 
 export const WorkTime = styled(Column)``;
+
+export const AppBlock = styled.div`
+  margin-top: 24px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #222b36;
+  text-align: center;
+`;
+
+export const AppBlockText = styled.p`
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #94a3b8;
+`;
+
+export const AppBadges = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+`;
+
+export const AppBadgeLink = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  border: 1px solid #64748b;
+  background: transparent;
+  color: rgb(55, 65, 81);
+  transition:
+    opacity 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    opacity: 1;
+    border-color: #94a3b8;
+    color: #cbd5e1;
+  }
+`;

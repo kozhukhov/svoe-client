@@ -257,8 +257,10 @@ export const ItemCard: FC<Props> = ({ categoryName, item }) => {
   return (
     <>
       <Styled.Card>
-        {isNew && <Styled.Badge>Новинка</Styled.Badge>}
-        {isBestseller && <Styled.Badge>Хит</Styled.Badge>}
+        {isNew && (
+          <Styled.Badge $color="rgba(255, 59, 48, 0.92)">Новинка</Styled.Badge>
+        )}
+        {isBestseller && <Styled.Badge $color="#7C3AED">Хит</Styled.Badge>}
         <Styled.Wrapper>
           <Styled.ImageButton
             $loading={!isImageLoaded && Boolean(activeSize.image)}

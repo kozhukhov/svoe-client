@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 import { BannerDTO } from 'modules/banner/dto';
 import { RestaurantDTO } from 'modules/restaurant/dto';
-import { getSeoDataServer } from 'modules/seo/service';
+import { buildMetadataFromSeo, getSeoDataServer } from 'modules/seo/service';
 
 import { MainPageClient } from './_containers/MainPageClient';
 
@@ -29,10 +29,7 @@ export async function generateMetadata({
     restaurantId: restaurant.id,
     url: '',
   });
-  return {
-    title: seoData.metaTitle ?? undefined,
-    description: seoData.metaDescription ?? undefined,
-  };
+  return buildMetadataFromSeo(seoData);
 }
 
 export default async function MainPage({

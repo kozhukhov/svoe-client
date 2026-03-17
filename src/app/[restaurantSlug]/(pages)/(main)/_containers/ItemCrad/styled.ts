@@ -41,14 +41,14 @@ export const Card = styled.div`
   justify-content: space-between;
 `;
 
-export const Badge = styled.div`
+export const Badge = styled.div<{ $color: string }>`
   position: absolute;
   top: 12px;
   left: 12px;
   z-index: 2;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(255, 59, 48, 0.92);
+  background: ${({ $color }) => $color};
   color: #ffffff;
   font-size: 12px;
   font-weight: 800;

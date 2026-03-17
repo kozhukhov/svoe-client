@@ -3,8 +3,8 @@ import { serverGet } from 'lib/services/fetchServer';
 import type { Metadata } from 'next';
 
 import { RestaurantDTO } from 'modules/restaurant/dto';
+import { buildMetadataFromSeo, getSeoDataServer } from 'modules/seo/service';
 import { ReviewDTO } from 'modules/review/dto';
-import { getSeoDataServer } from 'modules/seo/service';
 
 import { OtzyviPageClient } from './_containers/OtzyviPageClient';
 
@@ -33,10 +33,7 @@ export async function generateMetadata({
     restaurantId: restaurant.id,
     url: 'otzyvi',
   });
-  return {
-    title: seoData.metaTitle ?? undefined,
-    description: seoData.metaDescription ?? undefined,
-  };
+  return buildMetadataFromSeo(seoData);
 }
 
 export default async function OtzyviPage({

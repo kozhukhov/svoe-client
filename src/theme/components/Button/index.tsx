@@ -58,8 +58,8 @@ export const Button: FC<Props> = ({
   return (
     <Styled.Button
       disabled={disabled || loading}
-      onClick={handleClick}
       type={type}
+      onClick={handleClick}
       {...props}
     >
       {icon}
