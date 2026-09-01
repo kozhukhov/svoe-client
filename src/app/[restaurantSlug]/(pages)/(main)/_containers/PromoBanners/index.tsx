@@ -129,10 +129,12 @@ export const PromoBanners = ({
     <Styled.Wrapper>
       <Styled.Content>
         <Styled.WelcomeSection>
-          <Styled.WelcomeTitle>{seoData.title ?? ''}</Styled.WelcomeTitle>
-          <Styled.WelcomeDescription>
-            {seoData.description ?? ''}
-          </Styled.WelcomeDescription>
+          <Styled.WelcomeTitle
+            dangerouslySetInnerHTML={{ __html: seoData.title ?? '' }}
+          />
+          <Styled.WelcomeDescription
+            dangerouslySetInnerHTML={{ __html: seoData.description ?? '' }}
+          />
         </Styled.WelcomeSection>
 
         {isLoading ? (

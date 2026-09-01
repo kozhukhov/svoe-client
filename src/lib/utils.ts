@@ -1,3 +1,7 @@
+/** Удаляет HTML-теги из строки (для meta-тегов и plain text). */
+export const stripHtmlTags = (html: string): string =>
+  html.replace(/<[^>]*>/g, '').trim();
+
 /** Форматирует цену: всегда 2 знака после запятой. */
 export const formatPrice = (value: number | null | undefined): string =>
   Number(value ?? 0).toFixed(2);

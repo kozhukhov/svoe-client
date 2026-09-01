@@ -24,3 +24,18 @@ export const SectionInfo = styled.div<{
     }
   `}
 `;
+
+export const Description = styled.div<{ $center?: boolean }>`
+  font-size: 18px;
+  line-height: 26px;
+  color: #374151;
+  margin-bottom: 16px;
+  text-align: ${({ $center }) => ($center ? 'center' : 'left')};
+
+  ${({ theme: { media } }) => css`
+    ${media.mobile} {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  `}
+`;

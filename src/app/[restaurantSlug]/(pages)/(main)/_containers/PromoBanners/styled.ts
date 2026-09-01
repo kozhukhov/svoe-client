@@ -42,6 +42,10 @@ export const WelcomeTitle = styled.h1`
   line-height: 1.1;
   letter-spacing: -0.5px;
 
+  p {
+    margin: 0;
+  }
+
   @media (max-width: 968px) {
     font-size: 32px;
   }
@@ -61,13 +65,26 @@ export const Price = styled.span`
   font-weight: 900;
 `;
 
-export const WelcomeDescription = styled.p`
+export const WelcomeDescription = styled.div`
   font-size: 16px;
   font-weight: 400;
   color: #475467;
   margin: 0;
   line-height: 1.6;
   max-width: 90%;
+
+  p {
+    margin: 0 0 0.5em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  a {
+    color: #3f8f4a;
+    text-decoration: underline;
+  }
 
   @media (max-width: 968px) {
     font-size: 15px;

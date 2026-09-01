@@ -1,6 +1,7 @@
 import React from 'react';
+import { HtmlContent } from 'theme/components/HtmlContent';
 import { Label, Variant } from 'theme/components/Label';
-import { Headline, Paragraph } from 'theme/components/Typography';
+import { Headline } from 'theme/components/Typography';
 
 import * as Styled from './styled';
 
@@ -25,23 +26,31 @@ export const SectionInfo = ({
       {label && (
         <Label marginBottom="6px" text={label} variant={Variant.PRIMARY} />
       )}
-      {title && (
-        <Headline
-          level={3}
-          marginBottom="8px"
-          textAlign={center ? 'center' : 'left'}
-        >
-          {title}
-        </Headline>
-      )}
+      {title &&
+        (typeof title === 'string' ? (
+          <Headline
+            level={3}
+            marginBottom="8px"
+            textAlign={center ? 'center' : 'left'}
+          >
+            <HtmlContent html={title} textAlign={center ? 'center' : 'left'} />
+          </Headline>
+        ) : (
+          <Headline
+            level={3}
+            marginBottom="8px"
+            textAlign={center ? 'center' : 'left'}
+          >
+            {title}
+          </Headline>
+        ))}
       {description && (
-        <Paragraph
-          level={1}
-          marginBottom="16px"
-          textAlign={center ? 'center' : 'left'}
-        >
-          {description}
-        </Paragraph>
+        <Styled.Description $center={center}>
+          <HtmlContent
+            html={description}
+            textAlign={center ? 'center' : 'left'}
+          />
+        </Styled.Description>
       )}
       {content && content}
     </Styled.SectionInfo>
